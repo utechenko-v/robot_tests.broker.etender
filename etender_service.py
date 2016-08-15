@@ -3,6 +3,7 @@
 from iso8601 import parse_date
 import dateutil.parser
 from datetime import datetime, date, time
+from pyvirtualdisplay import Display
 
 
 def get_all_etender_dates(initial_tender_data, key, subkey=None):
@@ -78,3 +79,7 @@ def convert_etender_string_to_common_string(string):
         u"Відмінена закупівля":     u"cancelled",
         u"Завершена закупівля":     u"complete",
     }.get(string, string)
+
+def prepareVirtualDisplay():
+    display_vrt = Display(visible=0, size=(1920, 1080))
+    display_vrt.start()

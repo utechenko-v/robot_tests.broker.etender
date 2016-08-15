@@ -48,6 +48,7 @@ ${huge_timeout_for_visibility}  300
 Підготувати клієнт для користувача
   [Arguments]  @{ARGUMENTS}
   [Documentation]  Відкрити браузер, створити об’єкт api wrapper, тощо
+  prepareVirtualDisplay
   Open Browser  ${USERS.users['${ARGUMENTS[0]}'].homepage}  ${USERS.users['${ARGUMENTS[0]}'].browser}  alias=${ARGUMENTS[0]}
   Set Window Size  @{USERS.users['${ARGUMENTS[0]}'].size}
   Set Window Position  @{USERS.users['${ARGUMENTS[0]}'].position}
