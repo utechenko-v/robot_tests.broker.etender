@@ -306,6 +306,9 @@ Login
   ...      ${ARGUMENTS[1]} ==  ${TENDER_UAID}
   etender.Пошук тендера по ідентифікатору   ${ARGUMENTS[0]}   ${ARGUMENTS[1]}
   Wait Until Element Is Visible  xpath=//button[contains(@class, 'btn-sm btn-danger')]  ${huge_timeout_for_visibility}
+  ${Proposition_label_above_Cancel_button}=  Set Variable  //div[@class='ng-scope']/p[@class='text-success' and contains(text(),'Пропозиції')]
+  js scrollIntoView by xpath selector  ${Proposition_label_above_Cancel_button}
+  Sleep  1
   Click Element               xpath=//button[contains(@class, 'btn-sm btn-danger')]
   Wait Until Page Does Not Contain  Скасувати${SPACE}пропозицію  ${huge_timeout_for_visibility}
 
@@ -614,3 +617,7 @@ Change_date_to_month
   Sleep  3
   ${url}=  Get Element Attribute  xpath=//*[@id="participationUrl_0"]@href
   [return]  ${url}
+
+js scrollIntoView by xpath selector
+  [Arguments]   ${selector_string}
+  Execute Javascript  document.evaluate("${selector_string}",document.documentElement,null,XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null).snapshotItem(0).scrollIntoView();
