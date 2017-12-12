@@ -58,6 +58,7 @@ ${locator.items[2].contractPeriod.startDate}                   xpath=(//div[@ng-
 ${locator.items[0].contractPeriod.endDate}                     xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[2]
 ${locator.items[1].contractPeriod.endDate}                     xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[2]
 ${locator.items[2].contractPeriod.endDate}                     xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[2]
+${locator.minNumberOfQualifiedBids}                            xpath=//div[@class = 'row']/div/p[text() = 'Мінімальна кількість учасників:']/parent::div/following-sibling::div/p
 ${locator_item_unit.code}                                      id=item_unit_symb0
 ${locator.items[0].quantity}                                   id=item_quantity0
 ${locator.items[1].quantity}                                   id=item_quantity1
@@ -803,6 +804,11 @@ Check Is Element Loaded
   ${return_value}=   Отримати текст із поля і показати на сторінці  awards[1].status
   ${return_value}=   convert_etender_string_to_common_string      award.status=${return_value}
   [return]    ${return_value}
+
+Отримати інформацію про minNumberOfQualifiedBids
+  ${return_value}=   Отримати текст із поля і показати на сторінці   minNumberOfQualifiedBids
+  ${return_value}=   Convert To Number   ${return_value}
+  [return]  ${return_value}
 
 Change_date_to_month
   [Arguments]  @{ARGUMENTS}
