@@ -524,6 +524,7 @@ Login
   Click Element                  xpath=//button[@ng-click='beginCancelTender(reasonCancellationVariant)'][contains(text(), ' Почати процедуру')]
   Wait Until Page Contains Element  xpath=//form[@name='cancelForm']//input[@id='tend_doc_add']  ${huge_timeout_for_visibility}
   Sleep  1
+  Input text                     id=descrinput                        ${new_description}  #cancelDocDescription
   Choose File  xpath=//form[@name='cancelForm']//input[@id='tend_doc_add']  ${document}
   Sleep  1
   Run Keyword And Ignore Error   Page Should Contain  файл додано
@@ -1497,6 +1498,7 @@ Change_date_to_month
 
 Додати офлайн документ
   [Arguments]  ${username}  ${tender_uaid}  ${accessDetails}  ${title}=Familiarization with bank asset
+  etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   Wait Until Page Contains Element               id=accessDetails                                 60
   Sleep  10
   Input text                                     id=accessDetails                                 test
