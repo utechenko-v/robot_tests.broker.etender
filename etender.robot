@@ -1270,10 +1270,11 @@ Change_date_to_month
 Завантажити угоду до тендера
   [Arguments]  ${username}  ${tender_uaid}  ${contract_num}  ${filepath}
   Wait Until Element Is Visible   id=btn_ContractActiveAwarded     120
-  Click Element  id=btn_ContractActiveAwarded
+  Execute JavaScript               document.getElementById("btn_ContractActiveAwarded").click()
   sleep  5
   ${contract_num_str}=               Convert To String      ${contract_num}
   Input text                         id=contractNumber      ${contract_num_str}
+  Select From List By Label          id=docType             Підписаний договір
   Choose File  id=tend_doc_add  ${filepath}
   sleep  5
   Wait Until Element Is Visible      xpath=//button[contains(text(), 'Опублікувати документи та завершити пізніше')]
@@ -1281,8 +1282,6 @@ Change_date_to_month
   sleep  240  #  wait till disappears "Поки не експортовано"
   Reload Page
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  ${href}=  Get Element Attribute  xpath=(//div[@ng-show='!document.isDeleted']/a)@href
-  [return]  ${href}
 
 Підтвердити підписання контракту
   [Documentation]
@@ -1290,21 +1289,17 @@ Change_date_to_month
   ...      [Return] Nothing
   [Arguments]  ${username}  ${tender_uaid}  ${contract_num}
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Wait Until Page Does Not Contain         ${locator_block_overlay}
   ${tender_url}=    Get Location
-  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Run keyword   etender.Завантажити угоду до тендера  ${username}  ${tender_uaid}  ${contract_num}  ${filepath}
-  Remove File  ${file_path}
-  Wait Until Keyword Succeeds  10 x   20 s  Дочекатися статусу завершення аукціону  ${tender_url}
+  Wait Until Keyword Succeeds  10 x   20 s  Завершити і дочекатися статусу завершення аукціону  ${tender_url}
 
-Дочекатися статусу завершення аукціону
+Завершити і дочекатися статусу завершення аукціону
   [Arguments]  ${tender_url}
   Go to        ${tender_url}
   Reload Page
   Wait Until Page Does Not Contain         ${locator_block_overlay}
   Wait Until Element Is Visible      id=btn_ContractActiveAwarded    60
   sleep  5
-  Click Element                      id=btn_ContractActiveAwarded
+  Execute JavaScript               document.getElementById("btn_ContractActiveAwarded").click()
   Wait Until Element Is Visible      id=btn_CompleteAuction    60
   sleep  5
   Execute JavaScript                 document.getElementById("btn_CompleteAuction").click()
