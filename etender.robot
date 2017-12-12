@@ -1210,21 +1210,9 @@ Change_date_to_month
   ...      [Return] Nothing
   [Arguments]  ${username}  ${tender_uaid}  ${award_num}
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Reload Page
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   Wait Until Element Is Visible    xpath=//p[contains(text(), 'Кваліфікація переможця')]     30
-  Wait Until Element Is Visible    id=btn_getAwardsId1    30
-  Sleep  5
-  Click Element                    id=btn_getAwardsId1
-  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Wait Until Element Is Visible      id=documentToAdd4        30
-  Choose File                        id=documentToAdd4        ${file_path}
-  Sleep  60
-  Reload page
-  Wait Until Element Is Visible    xpath=//p[contains(text(), 'Кваліфікація переможця')]     30
-  Wait Until Element Is Visible    id=btn_getAwardsId1    30
-  Sleep  5
-  Click Element                    id=btn_getAwardsId1
+  Спробувати відкрити вікно рішення про Кандидата
   Wait Until Page Contains         Ви ухвалили рішення про підтвердження чи відхилення Кандидата?  30
   Wait Until Element Is Visible    id=btn_nextStepAwards    30
   Click Element                    id=btn_nextStepAwards
@@ -1236,7 +1224,6 @@ Change_date_to_month
   Reload Page
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   Wait Until Element Is Visible    xpath=//p[contains(text(), 'Оплачено, очікується підписання договору')]     30
-  Remove File  ${file_path}
 
 Дискваліфікувати постачальника
   [Arguments]  ${username}  ${tender_uaid}  ${award_num}  ${description}
