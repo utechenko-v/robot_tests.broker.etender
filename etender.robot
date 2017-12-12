@@ -1255,13 +1255,6 @@ Change_date_to_month
 Дискваліфікувати кандидата
   Wait Until Keyword Succeeds  10 x   20 s  Спробувати відкрити вікно рішення про Кандидата
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Wait Until Element Is Visible    id=documentToAdd4        30
-  Select From List By Label        xpath=//input[@id='documentToAdd4']/preceding-sibling::select[@id='docType']  Пропозиція, що перемогла
-  Choose File                      id=documentToAdd4        ${file_path}
-  Run Keyword And Ignore Error     Wait Until Page Contains         Файл додано!              30
-  # TODO: remove sleep someday?
-  Sleep  120
-  Reload page
   Wait Until Keyword Succeeds  10 x   20 s  Спробувати відкрити вікно рішення про Кандидата
   Wait Until Element Is Visible      id=btn_nextStepAwards    30
   sleep  3
@@ -1272,8 +1265,7 @@ Change_date_to_month
   sleep  3
   Select From List By Value          xpath=//select[contains(@ng-model,'reasonDisqualify')]  Переможець торгів документально не підтвердив свою відповідність вимогам замовника
   Click Element                      id=btn_disqualify
-  Run Keyword And Ignore Error       Wait Until Page Contains           Кандидата дискваліфіковано!    30
-  Remove File  ${file_path}
+  Wait Until Page Contains           Кандидата дискваліфіковано!    30
 
 Завантажити угоду до тендера
   [Arguments]  ${username}  ${tender_uaid}  ${contract_num}  ${filepath}
