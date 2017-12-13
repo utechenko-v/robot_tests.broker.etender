@@ -373,6 +373,7 @@ Login
   ${contractStartDate}=              convert_date_to_etender_format                 ${contractStartDate}
   ${contractEndDate}=                convert_date_to_etender_format                 ${contractEndDate}
   Wait Until Element Is Visible      id=contractPeriod_startDate${index}
+  Wait Until Element Is Not Visible  id=classification
   Click Element                      id=contractPeriod_startDate${index}
   sleep  1
   Input text                         id=contractPeriod_startDate${index}            ${contractStartDate}
