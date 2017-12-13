@@ -1310,6 +1310,7 @@ Change_date_to_month
   sleep  5
   Execute JavaScript               document.getElementById("btn_ContractActiveAwarded").click()
   Wait Until Element Is Visible      id=btn_CompleteAuction    60
+  Input text                         id=contractNumber  -1
   sleep  5
   Execute JavaScript                 document.getElementById("btn_CompleteAuction").click()
   sleep  5
