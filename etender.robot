@@ -1281,8 +1281,6 @@ Change_date_to_month
   Wait Until Element Is Visible   id=btn_ContractActiveAwarded     120
   Execute JavaScript               document.getElementById("btn_ContractActiveAwarded").click()
   sleep  5
-  ${contract_num_str}=               Convert To String      ${contract_num}
-  Input text                         id=contractNumber      ${contract_num_str}
   Select From List By Label          id=docType             Підписаний договір
   Choose File  id=tend_doc_add  ${filepath}
   sleep  5
