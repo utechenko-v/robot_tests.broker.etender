@@ -86,7 +86,7 @@ ${locator.eligibilityCriteria}                                 xpath=//div[@clas
 ${locator.lot_items_unit}                                      id=itemsUnit0                    #Одиниця виміру
 ${locator_document_title}                                      xpath=//a[contains(text(),'XX_doc_id_XX')]
 ${locator_document_href}                                       xpath=(//a[contains(text(),'XX_doc_id_XX')])@href
-${locator_document_description}                                xpath=//a[contains(text(),'XX_doc_id_XX')]
+${locator_document_description}                                xpath=//a[contains(text(),'XX_doc_id_XX')]/following-sibling::span
 ${locator_tender_document_documentType}                        xpath=(//tender-documents/div[@ng-show='documents.length>0']//a)[XX_doc_index_XX +1]/../../../li[@class='list-group-item']
 ${locator_question_title}                                      xpath=//span[contains(@id,'quest_title_') and contains(text(),'XX_que_id_XX')]
 ${locator_question_description}                                xpath=//span[contains(@id,'quest_title_') and contains(text(),'XX_que_id_XX')]/ancestor::div[contains(@ng-repeat,'question in questions')]//span[contains(@id,'quest_descr_')]
@@ -1087,7 +1087,8 @@ Change_date_to_month
 
 Конвертувати інформацію із документа про description
   [Arguments]  ${raw_value}
-  [return]  ${raw_value}
+  ${return_value}=  Set Variable  ${raw_value.split('(')[1].replace(')','')}
+  [return]  ${return_value}
 
 Отримати документ
   [Arguments]  ${username}  ${tender_uaid}  ${doc_id}
