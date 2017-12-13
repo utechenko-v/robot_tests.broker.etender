@@ -1299,10 +1299,10 @@ Change_date_to_month
   [Arguments]  ${username}  ${tender_uaid}  ${contract_num}
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender_url}=    Get Location
-  Wait Until Keyword Succeeds  10 x   20 s  Завершити і дочекатися статусу завершення аукціону  ${tender_url}
+  Wait Until Keyword Succeeds  10 x   20 s  Завершити і дочекатися статусу завершення аукціону  ${tender_url}  ${contract_num}
 
 Завершити і дочекатися статусу завершення аукціону
-  [Arguments]  ${tender_url}
+  [Arguments]  ${tender_url}  ${contract_num}
   Go to        ${tender_url}
   Reload Page
   Wait Until Page Does Not Contain         ${locator_block_overlay}
@@ -1310,7 +1310,8 @@ Change_date_to_month
   sleep  5
   Execute JavaScript               document.getElementById("btn_ContractActiveAwarded").click()
   Wait Until Element Is Visible      id=btn_CompleteAuction    60
-  Input text                         id=contractNumber  -1
+  ${contract_num_str}=               Convert To String  ${contract_num}
+  Input text                         id=contractNumber  ${contract_num_str}
   sleep  5
   Execute JavaScript                 document.getElementById("btn_CompleteAuction").click()
   sleep  5
