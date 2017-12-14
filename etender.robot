@@ -342,6 +342,7 @@ Login
   Input text                         xpath=(//input[@id='newCity'])[${index +1}]    ${locality}
   Input text                         xpath=(//input[@id='addressStr'])[${index +1}]  ${streetAddress}
   Input text                         xpath=(//input[@id='postIndex'])[${index +1}]  ${postalCode}
+  Execute JavaScript                 document.evaluate("(//input[@id='postIndex'])[${index +1}]", document.documentElement, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).scrollIntoView();
 
   Run Keyword If        '${scheme}' == 'CPV'         Run Keywords
   ...  Wait Until Element Is Visible      xpath=(//input[@id='openCPV'])[${index +1}]
