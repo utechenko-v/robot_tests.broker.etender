@@ -2,7 +2,7 @@
 
 from iso8601 import parse_date
 import dateutil.parser
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 from pytz import timezone
 import os
 
@@ -55,6 +55,13 @@ def convert_time_to_etender_format(isodate):
     time_string = iso_dt.strftime("%H:%M")
     return time_string
 
+def convert_contractPeriod_date_from_etender_format_to_isoformat(contractPeriod_date):
+    tmp_date = datetime.strptime(contractPeriod_date, '%d-%m-%Y')
+    TZ = timezone(os.environ['TZ'] if 'TZ' in os.environ else 'Europe/Kiev')
+    date_with_timezone_and_shift = TZ.localize(tmp_date)
+    time_string = date_with_timezone_and_shift.isoformat()
+    return time_string
+
 def string_to_float(string):
     return float(string)
 
@@ -69,6 +76,10 @@ def float_to_string_2f(value):
 
 def adapt_data(initial_data):
     initial_data['data']['procuringEntity']['name'] = u"Likvidator3"
+    for cur_item in initial_data['data']['items']:
+        old_date = cur_item['contractPeriod']['endDate']
+        new_date = (parse_date(old_date) + timedelta(days=1)).isoformat()
+        cur_item['contractPeriod']['endDate'] = new_date
     return initial_data
 
 def convert_etender_string_to_common_string(string):
@@ -123,13 +134,17 @@ def get_helper_dictionary():
         u"Завершена закупівля":     u"complete",
         u"Завершений аукціон":      u"complete",
         u"cancellation.status=Торги не відбулися": u"active", # workaround to distinguish between auction and cancellation
+        u"cancellation.status=Торги відмінено": u"active", # workaround to distinguish between auction and cancellation
         u"Договір опубліковано": u"active", # contract status
         u"Протокол торгів": u"auctionProtocol", # document type
         u"Ліцензія": u"financialLicense", # document type
 
+        u"Київська область": u"місто Київ", # document type
+
         u"(Оголошення аукціону з продажу прав вимоги за кредитами.)": u"dgfFinancialAssets",
         u"(Оголошення аукціону з продажу майна банків.)": u"dgfOtherAssets",
-        u"(Оголошення голландського аукціону.)": u"dgfInsider",
+        u"(Оголошення аукціону з продажу майна.)": u"dgfOtherAssets",
+        u"(Оголошення аукціону з Оренди.)": u"dgfOtherAssets",
         u"Код відповідного класифікатору лоту - CAV:": u"CAV",
 
         u"Посилання на Публічний Паспорт Активу":                   u"x_dgfPublicAssetCertificate",
