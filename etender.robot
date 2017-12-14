@@ -52,12 +52,12 @@ ${locator.items[2].additionalClassifications[0].description}   xpath=//span[@id=
 ${locator.items[0].unit.code}                                  id=item_unit_symb0
 ${locator.items[1].unit.code}                                  id=item_unit_symb1
 ${locator.items[2].unit.code}                                  id=item_unit_symb2
-${locator.items[0].contractPeriod.startDate}                   xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[1]
-${locator.items[1].contractPeriod.startDate}                   xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[1]
-${locator.items[2].contractPeriod.startDate}                   xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[1]
-${locator.items[0].contractPeriod.endDate}                     xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[2]
-${locator.items[1].contractPeriod.endDate}                     xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[2]
-${locator.items[2].contractPeriod.endDate}                     xpath=(//div[@ng-if='item.contractPeriod'])[1]/div[2]/span[2]
+${locator.items[0].contractPeriod.startDate}                   xpath=//div[@id='contractPeriodIndex_0']/span[1]
+${locator.items[1].contractPeriod.startDate}                   xpath=//div[@id='contractPeriodIndex_1']/span[1]
+${locator.items[2].contractPeriod.startDate}                   xpath=//div[@id='contractPeriodIndex_2']/span[1]
+${locator.items[0].contractPeriod.endDate}                     xpath=//div[@id='contractPeriodIndex_0']/span[2]
+${locator.items[1].contractPeriod.endDate}                     xpath=//div[@id='contractPeriodIndex_1']/span[2]
+${locator.items[2].contractPeriod.endDate}                     xpath=//div[@id='contractPeriodIndex_2']/span[2]
 ${locator.minNumberOfQualifiedBids}                            xpath=//div[@class = 'row']/div/p[text() = 'Мінімальна кількість учасників:']/parent::div/following-sibling::div/p
 ${locator_item_unit.code}                                      id=item_unit_symb0
 ${locator.items[0].quantity}                                   id=item_quantity0
