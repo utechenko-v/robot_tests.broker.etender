@@ -1122,6 +1122,8 @@ Check Is Element Loaded
   [return]  ${return_value}
 
 Отримати інформацію про items[0].description
+  Sleep   10
+  Відкрити розділ опис закупівлі
   ${return_value}=   Отримати текст із поля і показати на сторінці   items[0].description
   [return]  ${return_value}
 
@@ -1393,6 +1395,13 @@ Check Is Element Loaded
 Конвертувати інформацію із нецінового показника про featureOf
   [Arguments]  ${return_value}
   [return]  ${return_value}
+
+Відкрити розділ опис закупівлі
+  scrollIntoView by script using xpath  //li[@id="naviTitle0"]/span  # scroll to опис закупівлі tab
+  sleep   1
+  JavaScript scrollBy  0  -100
+  sleep   1
+  Click Element                      xpath=//li[@id="naviTitle0"]/span  # go to опис закупівлі tab
 
 Відкрити розділ пропозицій
   scrollIntoView by script using xpath  //li[@id="naviTitle1"]/span  # scroll to bids tab
