@@ -1336,6 +1336,10 @@ Check Is Element Loaded
 
 Створити постачальника, додати документацію і підтвердити його
   [Arguments]  ${username}  ${tender_uaid}  ${object}  ${document}
+  # TODO: investgate to remove this workaround.
+  # This workaround was added to make telephone adapted for our broker, since all non-digit symbols are ignored on input
+  ${telephone}=  Get From Dictionary   ${USERS.users['${username}'].supplier_data.data.suppliers[0].contactPoint}  telephone
+  Set To Dictionary  ${USERS.users['${username}'].supplier_data.data.suppliers[0].contactPoint}  telephone=${telephone.replace('-', '')}
   Sleep  30
   Reload Page
   Sleep  5
