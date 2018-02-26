@@ -17,6 +17,8 @@ ${locator.tenderPeriod.startDate}                              id=tenderStart
 ${locator.tenderPeriod.endDate}                                id=tenderEnd
 ${locator.enquiryPeriod.startDate}                             id=enquiryStart
 ${locator.enquiryPeriod.endDate}                               id=enquiryEnd
+${locator.causeDescription}                                    id=causeDescription
+${locator.cause}                                               id=cause
 ${locator.items[0].description}                                id=item_description_00
 ${locator.items[0].deliveryDate.startDate}                     id=delivery_start_00
 ${locator.items[0].deliveryDate.endDate}                       id=delivery_end_00
@@ -989,6 +991,14 @@ Check Is Element Loaded
   ${return_value}=   Convert To Boolean   ${return_value}
   [return]  ${return_value}
 
+Отримати інформацію про causeDescription
+  ${return_value}=  Отримати текст із поля і показати на сторінці  causeDescription
+  [return]  ${return_value}
+
+Отримати інформацію про cause
+  ${return_value}=  Отримати текст із поля і показати на сторінці  cause
+  ${return_value}=  convert_etender_string_to_common_string  ${return_value}
+  [return]  ${return_value}
 
 Отримати інформацію про items[0].unit.name
   ${return_value}=   Отримати текст із поля і показати на сторінці   items[0].unit.name

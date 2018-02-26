@@ -148,7 +148,13 @@ def get_helper_dictionary():
         u'пропозиції розглянуто': u'active.awarded',
         u'завершена закупівля': u'complete',
         u'закупівля не відбулась': u'unsuccessful',
-        u'відмінена закупівля': u'cancelled'
+        u'відмінена закупівля': u'cancelled',
+        u"ст.35 ч. 2 п. 1": u"artContestIP",
+        u"ст.35 ч. 2 п. 2": u"noCompetition",
+        u"ст.35 ч. 2 п. 4": u"twiceUnsuccessful",
+        u"ст.35 ч. 2 п. 5": u"additionalPurchase",
+        u"ст.35 ч. 2 п. 6": u"additionalConstruction",
+        u"ст.35 ч. 2 п. 7": u"stateLegalServices"
     }
 
 def get_feature_index(i):
