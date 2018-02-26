@@ -12,6 +12,17 @@ ${locator.status}                                              id=tenderStatus
 ${locator.description}                                         id=tenderDescription
 ${locator.minimalStep.amount}                                  id=lotMinimalStep_0
 ${locator.procuringEntity.name}                                id=tenderOwner
+${locator.procuringEntity.address.countryName}                 id=customer_country
+${locator.procuringEntity.address.locality}                    id=customer_city
+${locator.procuringEntity.address.postalCode}                  id=customer_postIndex
+${locator.procuringEntity.address.region}                      id=customer_region
+${locator.procuringEntity.address.streetAddress}               id=customer_addressStr
+${locator.procuringEntity.contactPoint.name}                   xpath=//span[contains(@ng-bind,"customer.organization.contactPoint.name") and not(contains(@ng-bind,"nameEN"))]
+${locator.procuringEntity.contactPoint.telephone}              xpath=//span[contains(@ng-bind,"customer.organization.contactPoint.telephone")]
+${locator.procuringEntity.contactPoint.url}                    xpath=//div[@class = 'row']/div/span[text() = 'Сайт:']/parent::div/following-sibling::div/a
+${locator.procuringEntity.identifier.legalName}                xpath=//span[contains(@ng-bind,"customer.organization.name")]
+${locator.procuringEntity.identifier.scheme}                   xpath=//div[@class = 'row']/div/span[text() = 'Найменування:']/parent::div/parent::div/following-sibling::div/div/span[starts-with(.,'Код')]
+${locator.procuringEntity.identifier.id}                       xpath=//span[contains(@ng-bind,"customer.organization.identifier.apiId")]
 ${locator.value.amount}                                        id=tenderBudget
 ${locator.tenderPeriod.startDate}                              id=tenderStart
 ${locator.tenderPeriod.endDate}                                id=tenderEnd
@@ -1022,6 +1033,59 @@ Check Is Element Loaded
   ${return_value}=   Отримати текст із поля і показати на сторінці   procuringEntity.name
   [return]  ${return_value}
 
+Отримати інформацію про procuringEntity.address.countryName
+  Sleep  10
+  Відкрити розділ контактні дані
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.address.countryName
+  ${return_value}=  Set Variable   ${return_value[:-1]}
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.address.locality
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.address.locality
+  ${return_value}=  Set Variable   ${return_value[:-1]}
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.address.postalCode
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.address.postalCode
+  ${return_value}=  Set Variable   ${return_value[:-1]}
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.address.region
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.address.region
+  ${return_value}=  Set Variable   ${return_value[:-1]}
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.address.streetAddress
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.address.streetAddress
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.contactPoint.name
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.contactPoint.name
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.contactPoint.telephone
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.contactPoint.telephone
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.contactPoint.url
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.contactPoint.url
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.identifier.legalName
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.identifier.legalName
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.identifier.scheme
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.identifier.scheme
+  ${return_value}=  Set Variable   ${return_value[:-1]}
+  ${return_value}=  Set Variable   ${return_value.replace(u"Код ","")}
+  ${return_value}=  Set Variable   ${return_value.replace(u"ЄДРПОУ","UA-EDR")}
+  [return]  ${return_value}
+
+Отримати інформацію про procuringEntity.identifier.id
+  ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.identifier.id
+  [return]  ${return_value}
+
 Отримати інформацію про tenderPeriod.startDate
   ${return_value}=   Отримати текст із поля і показати на сторінці  tenderPeriod.startDate
   ${return_value}=   Set Variable  ${return_value.replace(u'з ','')}
@@ -1333,6 +1397,13 @@ Check Is Element Loaded
   JavaScript scrollBy  0  -100
   sleep   4
   Click Element                      xpath=//li[@id="naviTitle3"]/span  # go to complaints
+
+Відкрити розділ контактні дані
+  scrollIntoView by script using xpath  //li[@id="naviTitle4"]/span  # scroll to контактні дані
+  sleep   1
+  JavaScript scrollBy  0  -100
+  sleep   1
+  Click Element                      xpath=//li[@id="naviTitle4"]/span  # go to контактні дані
 
 Створити постачальника, додати документацію і підтвердити його
   [Arguments]  ${username}  ${tender_uaid}  ${object}  ${document}
