@@ -30,6 +30,7 @@ ${locator.enquiryPeriod.startDate}                             id=enquiryStart
 ${locator.enquiryPeriod.endDate}                               id=enquiryEnd
 ${locator.causeDescription}                                    id=causeDescription
 ${locator.cause}                                               id=cause
+${locator.contracts[0].status}                                 xpath=//div[@id="treeLotBid-00-0"]//div[@ng-if="!award.isSignatureExist"]
 ${locator.items[0].description}                                id=item_description_00
 ${locator.items[0].deliveryDate.startDate}                     id=delivery_start_00
 ${locator.items[0].deliveryDate.endDate}                       id=delivery_end_00
@@ -1009,6 +1010,16 @@ Check Is Element Loaded
 
 Отримати інформацію про cause
   ${return_value}=  Отримати текст із поля і показати на сторінці  cause
+  ${return_value}=  convert_etender_string_to_common_string  ${return_value}
+  [return]  ${return_value}
+
+Отримати інформацію про contracts[0].status
+  Reload Page
+  Sleep  10
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ пропозицій
+  ${return_value}=  Отримати текст із поля і показати на сторінці  contracts[0].status
+  ${return_value}=  Set Variable  ${return_value.strip()}
   ${return_value}=  convert_etender_string_to_common_string  ${return_value}
   [return]  ${return_value}
 

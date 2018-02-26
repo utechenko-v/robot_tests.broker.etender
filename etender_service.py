@@ -163,7 +163,8 @@ def get_helper_dictionary():
         u"ст.35 ч. 2 п. 4": u"twiceUnsuccessful",
         u"ст.35 ч. 2 п. 5": u"additionalPurchase",
         u"ст.35 ч. 2 п. 6": u"additionalConstruction",
-        u"ст.35 ч. 2 п. 7": u"stateLegalServices"
+        u"ст.35 ч. 2 п. 7": u"stateLegalServices",
+        u"Рішення НЕ підписано": u"pending"
     }
 
 def get_feature_index(i):
