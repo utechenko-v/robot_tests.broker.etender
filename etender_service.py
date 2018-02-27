@@ -148,6 +148,7 @@ def get_helper_dictionary():
          u"Київ": u"місто Київ",
         # TODO: remove this temporary workaround, consult with quinta team about input data
         u"Дніпро": u"Дніпропетровськ",
+        #tender statuses
         u'період уточнень': u'active.enquiries',
         u'очікування пропозицій': u'active.tendering',
         u'прекваліфікація': u'active.pre-qualification',
@@ -158,6 +159,8 @@ def get_helper_dictionary():
         u'завершена закупівля': u'complete',
         u'закупівля не відбулась': u'unsuccessful',
         u'відмінена закупівля': u'cancelled',
+        #bid statuses
+        u'Пропозиція не дійсна': u'invalid',
         u"ст.35 ч. 2 п. 1": u"artContestIP",
         u"ст.35 ч. 2 п. 2": u"noCompetition",
         u"ст.35 ч. 2 п. 4": u"twiceUnsuccessful",
@@ -168,9 +171,9 @@ def get_helper_dictionary():
     }
 
 def get_feature_index(i):
-    return {0.05: '0',
-            0.01: '1',
-            0: '2'}[i]
+    return {0.05: '1',
+            0.01: '2',
+            0: '3'}[i]
 
 def convert_unit_name_to_unit_code(string):
     return {
