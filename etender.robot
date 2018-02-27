@@ -731,7 +731,7 @@ Enter enquiry date
 
 
 Завантажити документ в ставку
-  [Arguments]  ${username}  ${file}  ${tender_uaid}
+  [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=0
   Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
   Select From List By Index     id=bidDocType_      1
   Завантажити док  ${username}  ${file}  id=addBidDoc_
@@ -779,10 +779,9 @@ Enter enquiry date
   Відкрити розділ пропозицій
   ${amount}=    Run Keyword If  ${lots_ids} is None  Set Variable  ${bid_data.data.value.amount}
   ...           ELSE  Set Variable  ${bid_data.data.lotValues[0].value.amount}
-  ${amount}=    Convert To String       ${amount}
-  Run Keyword Unless  ${features_ids} is None  Заповнити нецінові критерії  ${features_ids}  ${bid_data.data.parameters}
-  Input text        id=amount0                  ${amount}
+  Input String      id=amount0      ${amount}
   Run Keyword And Ignore Error      Пітдвердити чекбокси пропозиції
+  Run Keyword Unless  ${features_ids} is None  Заповнити нецінові критерії  ${features_ids}  ${bid_data.data.parameters}
   Click Element     id=createBid_0
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   sleep  3
@@ -792,22 +791,38 @@ Enter enquiry date
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   Відкрити розділ пропозицій
-  ${value}=     Get Text                id=bidAmount0
+  Run Keyword And Return If  'value' in '${field}'  Отримати інформацію про value пропозиції
+  Run Keyword And Return  Отримати інформацію про ${field} пропозиції
+
+Отримати інформацію про value пропозиції
+  ${value}=     Get Text        id=bidAmount0
   ${value}=     parse_currency_value_with_spaces    ${value}
-  ${value}=     Convert To Number       ${value}
-  Log  ${value}
-  [Return]  ${value}
+  Run Keyword And Return  Convert To Number  ${value}
+
+Отримати інформацію про status пропозиції
+  ${value}=     Get Text        id=bidStatus0
+  Run Keyword And Return  convert_etender_string_to_common_string  ${value}
 
 Змінити цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${field}  ${value}
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   Sleep    5
-  Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
-  ${value}=    Convert To String       ${value}
-  Input text        id=amount0                  ${value}
-  Click Element                      xpath=//button[contains(@click-and-block, 'updateBid(bid)')]
+  Run Keyword If  '${field}'=='status'  Підтвердити пропозицію
+  Run Keyword If  'value' in '${field}'  Редагувати суму пропозиції  ${value}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Sleep    3
+  Sleep    1
+
+Редагувати суму пропозиції
+  [Arguments]  ${value}
+  Натиснути редагувати пропозицію
+  Input String      id=amount0       ${value}
+  Click Element     xpath=//button[contains(@click-and-block, 'updateBid(bid)')]
+
+Підтвердити пропозицію
+  Click Element     id=confirmBid_0
+
+Натиснути редагувати пропозицію
+  Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
 
 Скасувати цінову пропозицію
   [Arguments]  @{ARGUMENTS}
@@ -875,6 +890,12 @@ scrollIntoView by script using xpath
 JavaScript scrollBy
   [Arguments]  ${x_offset}  ${y_offset}
   Execute JavaScript  window.scrollBy(${x_offset}, ${y_offset})
+
+Input String
+  [Arguments]  ${locator}  ${value}
+  [Documentation]  Converts value to string and inputs to locator field
+  ${value}=     Convert To String       ${value}
+  Input text    ${locator}              ${value}
 
 Check Is Element Loaded
   [Arguments]  ${locator}
