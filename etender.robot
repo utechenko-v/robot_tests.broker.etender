@@ -81,6 +81,21 @@ ${locator_question_title}                                      xpath=//span[cont
 ${locator_feature_title}                                       xpath=//*[contains(@ng-bind,'eature.title') and contains(text(),'XX_feature_id_XX')]
 ${locator_feature_description}                                 xpath=//*[contains(@ng-bind,'eature.title') and contains(text(),'XX_feature_id_XX')]/../../following-sibling::div//*[contains(@ng-bind,'eature.description')]
 ${locator_feature_featureOf}                                   xpath=//div[contains(@ng-repeat,"eature")]//span[contains(@ng-bind,"eature.title") and contains(.,"XX_feature_id_XX")]
+${locator_item_description}                                    xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]
+${locator_item_classification.scheme}                          xpath=//table[contains(@class,"itemTable")]//th[contains(.,"Класифікатор ")]
+${locator_item_classification.id}                              xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"classification_code_")]
+${locator_item_classification.description}                     xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"classification_name_")]
+${locator_item_additionalClassifications[0].id}                xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"additionalClassification_id")]
+${locator_item_additionalClassifications[0].description}       xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"additionalClassification_desc")]
+${locator_item_quantity}                                       xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"item_quantity_")]
+${locator_item_unit.name}                                      xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"item_unit_")]
+${locator_item_unit.code}                                      xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"item_unit_")]
+${locator_item_deliveryDate.endDate}                           xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_end_")]
+${locator_item_deliveryAddress.countryName}                    xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_country_")]
+${locator_item_deliveryAddress.postalCode}                     xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_postIndex_")]
+${locator_item_deliveryAddress.region}                         xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_region_")]
+${locator_item_deliveryAddress.locality}                       xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_city_")]
+${locator_item_deliveryAddress.streetAddress}                  xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_addressStr_")]
 ${huge_timeout_for_visibility}                                 300
 
 
@@ -1348,7 +1363,77 @@ Check Is Element Loaded
 
 Отримати інформацію із предмету
   [Arguments]    ${user}    ${tender_uaid}    ${item_id}    ${fieldname}
-  Fail  Temporary using keyword 'Отримати інформацію із тендера' until will be updated keyword 'Отримати інформацію із предмету'
+  # TODO: remove old-style keywords and locators, like Отримати інформацію про items[0].classification.description
+  Reload Page
+  ${prepared_locator}=  Set Variable  ${locator_item_${field_name}}
+  ${prepared_locator}=  Set Variable  ${prepared_locator.replace('XX_item_id_XX','${item_id}')}
+  log  ${prepared_locator}
+  sleep   10
+  Відкрити розділ опис закупівлі
+  Wait Until Page Contains Element  ${prepared_locator}  10
+  Wait Until Keyword Succeeds  10 x  5  Check Is Element Loaded  ${prepared_locator}
+  ${raw_value}=   Get Text  ${prepared_locator}
+  ${fields_supported}=  Create List  description  classification.scheme  classification.id  classification.description  additionalClassifications[0].id  additionalClassifications[0].description  quantity  unit.name  unit.code  deliveryDate.endDate  deliveryAddress.countryName  deliveryAddress.postalCode  deliveryAddress.region  deliveryAddress.locality  deliveryAddress.streetAddress
+  List Should Contain Value  ${fields_supported}  ${fieldname}
+  Run Keyword And Return  Конвертувати інформацію із предмету про ${fieldname}  ${raw_value}
+
+Конвертувати інформацію із предмету про description
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
+
+Конвертувати інформацію із предмету про classification.scheme
+  [Arguments]  ${raw_value}
+  ${raw_value}=      Set Variable  ${raw_value.split(u'КЛАСИФІКАТОР ')[1]}
+  ${raw_value}=      Set Variable  ${raw_value.split(':')[0]}
+  ${return_value}=   Set Variable  ${raw_value.replace(' ', '')}
+  [return]  ${return_value}
+
+Конвертувати інформацію із предмету про classification.id
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
+
+Конвертувати інформацію із предмету про classification.description
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
+
+Конвертувати інформацію із предмету про quantity
+  [Arguments]  ${raw_value}
+  ${return_value}=  Convert To Number  ${raw_value}
+  [return]  ${return_value}
+
+Конвертувати інформацію із предмету про unit.name
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
+
+Конвертувати інформацію із предмету про unit.code
+  [Arguments]  ${raw_value}
+  ${return_value}=  convert_unit_name_to_unit_code  ${raw_value}
+  [return]  ${return_value}
+
+Конвертувати інформацію із предмету про deliveryDate.endDate
+  [Arguments]  ${raw_value}
+  ${raw_value}=   Set Variable  ${raw_value.replace(u'по ','')}
+  ${return_value}=  convert_etender_date_to_iso_format   ${raw_value}, 00:00
+  [return]  ${return_value}
+
+Конвертувати інформацію із предмету про deliveryAddress.countryName
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
+
+Конвертувати інформацію із предмету про deliveryAddress.region
+  [Arguments]  ${raw_value}
+  ${return_value}=    convert_etender_string_to_common_string     ${raw_value}
+  [return]  ${return_value}
+
+Конвертувати інформацію із предмету про deliveryAddress.locality
+  [Arguments]  ${raw_value}
+  ${return_value}=   Remove String      ${raw_value}     ,
+  ${return_value}=    convert_etender_string_to_common_string     ${return_value}
+  [return]  ${return_value}
+
+Конвертувати інформацію із предмету про deliveryAddress.streetAddress
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
 
 Отримати інформацію із запитання
   [Arguments]  ${username}  ${tender_uaid}  ${question_id}  ${field}
