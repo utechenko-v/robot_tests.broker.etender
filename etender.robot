@@ -30,7 +30,7 @@ ${locator.enquiryPeriod.startDate}                             id=enquiryStart
 ${locator.enquiryPeriod.endDate}                               id=enquiryEnd
 ${locator.causeDescription}                                    id=causeDescription
 ${locator.cause}                                               id=cause
-${locator.contracts[0].status}                                 xpath=//div[@id="treeLotBid-00-0"]//div[@ng-if="!award.isSignatureExist"]
+${locator.contracts[0].status}                                 xpath=//div[@class = 'row']/div[contains(.,'Статус договору:')]/following-sibling::div
 ${locator.items[0].description}                                id=item_description_00
 ${locator.items[0].deliveryDate.startDate}                     id=delivery_start_00
 ${locator.items[0].deliveryDate.endDate}                       id=delivery_end_00
