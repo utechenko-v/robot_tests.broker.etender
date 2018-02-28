@@ -499,6 +499,10 @@ Enter enquiry date
   [Arguments]  ${username}  ${tender_uaid}  ${question}
   Задати запитання на  Тендер  0  ${question}
 
+Задати запитання на предмет
+  [Arguments]  ${username}  ${tender_uaid}  ${question}
+  Задати запитання на  Предмет  0  ${question}
+
 Задати запитання на лот
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${question}
   Задати запитання на  Лот  ${lot_id}  ${question}
