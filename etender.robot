@@ -500,7 +500,7 @@ Enter enquiry date
   Задати запитання на  Тендер  0  ${question}
 
 Задати запитання на предмет
-  [Arguments]  ${username}  ${tender_uaid}  ${question}
+  [Arguments]  ${username}  ${tender_uaid}  ${item_id}  ${question}
   Задати запитання на  Предмет  0  ${question}
 
 Задати запитання на лот
