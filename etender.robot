@@ -55,8 +55,13 @@ ${locator.questions[0].description}                            id=quest_descr_0
 ${locator.questions[0].date}                                   id=quest_date_0
 ${locator.questions[0].answer}                                 id=question_answer_0
 ${locator.awards[0].complaintPeriod.endDate}                   xpath=//div[@ng-if="award.complaintPeriod.endDate"]/div[2]/span
-${locator.awards[0].suppliers[0].contactPoint.telephone}       xpath=//div[@class = "row"]/div[contains(.,"Ім")]/following-sibling::div/span/span[@data-type="info"]/following-sibling::div//p[contains(.,"Телефон:")]
 ${locator.awards[0].status}                                    xpath=//div[@class = 'row']/div[contains(.,'Статус:')]/following-sibling::div
+${locator.awards[0].suppliers[0].contactPoint.telephone}       xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"Телефон:")]
+${locator.awards[0].suppliers[0].contactPoint.name}            xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"Контактна особа:")]
+${locator.awards[0].suppliers[0].contactPoint.email}           xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"email:")]
+${locator.awards[0].suppliers[0].identifier.scheme}            xpath=//span[@id="awardContactPoint"]/following-sibling::div//p/b[contains(.,"Код ")]
+${locator.awards[0].suppliers[0].identifier.legalName}         xpath=//span[@id="awardContactPoint"]/u
+${locator.awards[0].suppliers[0].identifier.id}                xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"Код ")]
 ${locator_document_title}                                      xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]
 ${locator_document_href}                                       xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]@href
 ${locator_document_description}                                xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]/following-sibling::p
@@ -1266,11 +1271,61 @@ Check Is Element Loaded
 Отримати інформацію про awards[0].suppliers[0].contactPoint.telephone
   Sleep   10
   Відкрити розділ пропозицій
-  Mouse Over  xpath=//div[@class = "row"]/div[contains(.,"Ім")]/following-sibling::div/span/span[@data-type="info"]
+  Mouse Over  xpath=//span[@id="awardContactPoint"]
   Sleep  1
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].contactPoint.telephone
   ${return_value}=  Set Variable  ${return_value.replace(u'Телефон: ','')}
-  ${return_value}=  hack_phone_add_dashes  ${return_value}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].contactPoint.name
+  Mouse Over  xpath=//li[@id="naviTitle0"]/span   # just to move cursor away
+  Sleep  1
+  Mouse Over  xpath=//span[@id="awardContactPoint"]
+  Sleep  1
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].contactPoint.name
+  ${return_value}=  Set Variable  ${return_value.replace(u'Контактна особа: ','')}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].contactPoint.email
+  Mouse Over  xpath=//span[@id="awardContactPoint"]
+  Sleep  1
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].contactPoint.email
+  ${return_value}=  Set Variable  ${return_value.replace(u'email: ','')}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].identifier.scheme
+  Mouse Over  xpath=//span[@id="awardContactPoint"]
+  Sleep  1
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].identifier.scheme
+  ${return_value}=  Set Variable  ${return_value.replace(u'Код ','')}
+  ${return_value}=  Set Variable  ${return_value.split(':')[0]}
+  ${return_value}=  Set Variable  ${return_value.replace(u"ЄДРПОУ","UA-EDR")}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].identifier.legalName
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].identifier.legalName
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].identifier.id
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].identifier.id
+  ${return_value}=  Set Variable  ${return_value.split(':')[1]}
+  ${return_value}=  Set Variable  ${return_value.strip()}
+  [return]  ${return_value}
+
+Отримати інформацію про documents[0].title
+  Sleep  10
+  Відкрити розділ опис закупівлі
+  # TODO move locator
+  ${return_value}=  Get Text  xpath=//td[contains(@class,"doc-name")]//a
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].documents[0].title
+  Sleep  10
+  Відкрити розділ пропозицій
+  Click Element  xpath=//label[@for="showAwards00"]  #
+  Sleep  1
+  # TODO move locator
+  ${return_value}=  Get Text  xpath=//td[contains(@class,"doc-name")]//a
   [return]  ${return_value}
 
 Отримати посилання на аукціон для глядача
