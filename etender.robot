@@ -757,11 +757,16 @@ Enter enquiry date
 
 Завантажити документ в ставку
   [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=0
+  Відкрити розділ пропозицій
   Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
+  Run Keyword And Ignore Error  Обрати конфіденційність документа
   Select From List By Index     id=bidDocType_      1
   Завантажити док  ${username}  ${file}  id=addBidDoc_
   Sleep  5
 
+Обрати конфіденційність документа
+  [Arguments]  ${conf}=1
+  Select From List By Index     id=bidDocConf_   ${conf}
 
 Змінити документ в ставці
   [Arguments]  ${username}  ${tender_uaid}  ${file}  ${doc_id}
