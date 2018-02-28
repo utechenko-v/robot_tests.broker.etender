@@ -520,6 +520,7 @@ Enter enquiry date
   Input text        id=title            ${question.data.title}
   Input text        id=description      ${question.data.description}
   Click Element     id=sendQuestion
+  Sleep  15  # wait for export
 
 Вибрати лот запитання
   [Arguments]  ${lot_id}
@@ -756,11 +757,12 @@ Enter enquiry date
 
 
 Завантажити документ в ставку
-  [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=0
+  [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=1
   Відкрити розділ пропозицій
   Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
   Run Keyword And Ignore Error  Обрати конфіденційність документа
-  Select From List By Index     id=bidDocType_      1
+  ${doc_type}=          get_doc_type_index          ${doc_type}
+  Select From List By Index     id=bidDocType_      ${doc_type}
   Завантажити док  ${username}  ${file}  id=addBidDoc_
   Sleep  5
 

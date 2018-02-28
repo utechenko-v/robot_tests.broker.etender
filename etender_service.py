@@ -85,6 +85,7 @@ def change_data(initial_data):
     initial_data['data']['procuringEntity']['address']['streetAddress']  = u"Фрунзе, 666"
     initial_data['data']['procuringEntity']['contactPoint']['name']      = u"Владелец Этого Тендера"
     initial_data['data']['procuringEntity']['contactPoint']['telephone'] = u"613371488228"
+    initial_data['data']['procuringEntity']['contactPoint']['url']       = u"http://e-tender.ua/"
     initial_data['data']['procuringEntity']['identifier']['legalName']   = u"TenderOwner#"
     initial_data['data']['procuringEntity']['identifier']['id']          = u"88008800"
     return initial_data
@@ -176,6 +177,11 @@ def get_feature_index(i):
     return {0.05: '1',
             0.01: '2',
             0: '3'}[i]
+
+def get_doc_type_index(i):
+    return {'financial_documents': '1',
+            'qualification_documents': '2',
+            'eligibility_documents': '3'}.get(i, i)
 
 def convert_unit_name_to_unit_code(string):
     return {
