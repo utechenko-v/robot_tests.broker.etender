@@ -56,6 +56,7 @@ ${locator.questions[0].date}                                   id=quest_date_0
 ${locator.questions[0].answer}                                 id=question_answer_0
 ${locator.awards[0].complaintPeriod.endDate}                   xpath=//div[@ng-if="award.complaintPeriod.endDate"]/div[2]/span
 ${locator.awards[0].suppliers[0].contactPoint.telephone}       xpath=//div[@class = "row"]/div[contains(.,"Ім")]/following-sibling::div/span/span[@data-type="info"]/following-sibling::div//p[contains(.,"Телефон:")]
+${locator.awards[0].status}                                    xpath=//div[@class = 'row']/div[contains(.,'Статус:')]/following-sibling::div
 ${locator_document_title}                                      xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]
 ${locator_document_href}                                       xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]@href
 ${locator_document_description}                                xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]/following-sibling::p
@@ -1252,6 +1253,14 @@ Check Is Element Loaded
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].complaintPeriod.endDate
   ${return_value}=  Set Variable  ${return_value.replace(u'по ','')}
   ${return_value}=  convert_etender_date_to_iso_format_and_add_timezone   ${return_value}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].status
+  Sleep   10
+  Відкрити розділ пропозицій
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].status
+  ${return_value}=  Set Variable  ${return_value.strip()}
+  ${return_value}=   convert_etender_string_to_common_string   ${return_value}
   [return]  ${return_value}
 
 Отримати інформацію про awards[0].suppliers[0].contactPoint.telephone
