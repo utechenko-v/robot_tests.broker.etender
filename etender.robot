@@ -56,6 +56,15 @@ ${locator.questions[0].date}                                   id=quest_date_0
 ${locator.questions[0].answer}                                 id=question_answer_0
 ${locator.awards[0].complaintPeriod.endDate}                   xpath=//div[@ng-if="award.complaintPeriod.endDate"]/div[2]/span
 ${locator.awards[0].status}                                    xpath=//div[@class = 'row']/div[contains(.,'Статус:')]/following-sibling::div
+${locator.awards[0].value.valueAddedTaxIncluded}               xpath=//div[@class = 'row']/div[contains(.,'Пропозиція:')]/following-sibling::div/span/i
+${locator.awards[0].value.currency}                            xpath=//div[@class = 'row']/div[contains(.,'Пропозиція:')]/following-sibling::div/span
+${locator.awards[0].value.amount}                              xpath=//div[@class = 'row']/div[contains(.,'Пропозиція:')]/following-sibling::div/span
+${locator.awards[0].suppliers[0].address.countryName}          id=awardCountry_0
+${locator.awards[0].suppliers[0].address.locality}             id=awardCity_0
+${locator.awards[0].suppliers[0].address.postalCode}           id=awardIndex_0
+${locator.awards[0].suppliers[0].address.region}               id=awardRegion_0
+${locator.awards[0].suppliers[0].address.streetAddress}        id=awardAddressStr_0
+${locator.awards[0].suppliers[0].name}                         xpath=//span[@id="awardContactPoint"]/u
 ${locator.awards[0].suppliers[0].contactPoint.telephone}       xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"Телефон:")]
 ${locator.awards[0].suppliers[0].contactPoint.name}            xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"Контактна особа:")]
 ${locator.awards[0].suppliers[0].contactPoint.email}           xpath=//span[@id="awardContactPoint"]/following-sibling::div//p[contains(.,"email:")]
@@ -1292,6 +1301,61 @@ Check Is Element Loaded
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].status
   ${return_value}=  Set Variable  ${return_value.strip()}
   ${return_value}=   convert_etender_string_to_common_string   ${return_value}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].address.countryName
+  Sleep   10
+  Відкрити розділ пропозицій
+  Mouse Over  xpath=//span[@id="awardContactPoint"]
+  Sleep  1
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].address.countryName
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].address.locality
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].address.locality
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].address.postalCode
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].address.postalCode
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].address.region
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].address.region
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].address.streetAddress
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].address.streetAddress
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].suppliers[0].name
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].name
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].value.valueAddedTaxIncluded
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].value.valueAddedTaxIncluded
+  ${return_value}=  Set Variable  ${return_value.strip()}
+  ${return_value}=    convert_etender_string_to_common_string     ${return_value}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].value.currency
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].value.currency
+  # process values like this:   "   9 254,00 UAH, включаючи ПДВ  "
+  ${return_value}=  Set Variable  ${return_value.strip()}
+  ${return_value}=  Set Variable  ${return_value.split(',')[1]}
+  ${return_value}=  Set Variable  ${return_value.split(' ')[1]}
+  [return]  ${return_value}
+
+Отримати інформацію про awards[0].value.amount
+  ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].value.amount
+  # process values like this  "   9 254,00 UAH, включаючи ПДВ  "
+  ${return_value}=  Set Variable  ${return_value.strip()}
+  ${part_one}=  Set Variable  ${return_value.split(',')[0]}
+  ${part_two}=  Set Variable  ${return_value.split(',')[1]} # get fractional part with currency
+  ${part_two}=  Set Variable  ${part_two.split(' ')[0]}  # remove currency and leave fractional part only
+  ${part_one}=  Set Variable  ${part_one.replace(u'\xa0','')}
+  ${part_one}=  Set Variable  ${part_one.replace(' ','')}
+  ${return_value}=  Set Variable  ${part_one}.${part_two}
+  ${return_value}=  Convert To Number  ${return_value}
   [return]  ${return_value}
 
 Отримати інформацію про awards[0].suppliers[0].contactPoint.telephone
