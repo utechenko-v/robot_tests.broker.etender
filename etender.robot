@@ -1495,6 +1495,10 @@ Check Is Element Loaded
   [Arguments]  ${raw_value}
   [return]  ${raw_value}
 
+Конвертувати інформацію із предмету про deliveryAddress.postalCode
+  [Arguments]  ${raw_value}
+  [return]  ${raw_value}
+
 Конвертувати інформацію із предмету про deliveryAddress.region
   [Arguments]  ${raw_value}
   ${return_value}=    convert_etender_string_to_common_string     ${raw_value}
