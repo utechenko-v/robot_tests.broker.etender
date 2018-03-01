@@ -767,6 +767,7 @@ Enter enquiry date
 
 Завантажити документ в ставку
   [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=1
+  etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   Відкрити розділ пропозицій
   Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
   Run Keyword And Ignore Error  Обрати конфіденційність документа
