@@ -550,6 +550,7 @@ Enter enquiry date
   Close Browser
   etender.Підготувати клієнт для користувача  ${username}
   Go To  ${tmp_location}
+  Sleep  5
 
 Завантажити документ
   [Arguments]  ${username}  ${file}  ${tender_uaid}
@@ -1423,9 +1424,9 @@ Check Is Element Loaded
   [Arguments]  @{ARGUMENTS}
   etender.Пошук тендера по ідентифікатору   ${ARGUMENTS[0]}   ${ARGUMENTS[1]}
   Sleep  60
-  Page Should Contain Element  xpath=//p[contains(@ng-if,"auctionUrl")]/a
+  Page Should Contain Element  xpath=//a[contains(.,"Подивитись процедуру проведення аукціону")]
   Sleep  3
-  ${url}=  Get Element Attribute  xpath=//p[contains(@ng-if,"auctionUrl")]/a@href
+  ${url}=  Get Element Attribute  xpath=//a[contains(.,"Подивитись процедуру проведення аукціону")]@href
   [return]  ${url}
 
 Отримати посилання на аукціон для учасника
@@ -1654,6 +1655,7 @@ Check Is Element Loaded
   Click Element                      xpath=//li[@id="naviTitle0"]/span  # go to опис закупівлі tab
 
 Відкрити розділ пропозицій
+  sleep   1
   scrollIntoView by script using xpath  //li[@id="naviTitle1"]/span  # scroll to bids tab
   sleep   1
   JavaScript scrollBy  0  -100
@@ -1663,10 +1665,11 @@ Check Is Element Loaded
 
 Відкрити розділ вимог і скарг
   scrollIntoView by script using xpath  //li[@id="naviTitle3"]/span  # scroll to complaints
-  sleep   4
+  sleep   1
   JavaScript scrollBy  0  -100
-  sleep   4
+  sleep   1
   Click Element                      xpath=//li[@id="naviTitle3"]/span  # go to complaints
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
 
 Відкрити розділ контактні дані
   scrollIntoView by script using xpath  //li[@id="naviTitle4"]/span  # scroll to контактні дані
