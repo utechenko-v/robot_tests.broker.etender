@@ -1958,8 +1958,82 @@ Wait for upload
   Sleep  1
   Click Element  id=btnanswerComplaint
 
+Відповісти на вимогу про виправлення визначення переможця
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}  ${award_index}
+  # TODO: rework duplicated code - see "Відповісти на вимогу про виправлення умов закупівлі"
+  # TODO: remove workaround and open complaint using given complaintID
+  ${tmp_hacked_title}=  Get From Dictionary  ${USERS.users['Tender_User'].claim_data.claim.data}  title
+  Reload Page
+  Sleep   10
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ вимог і скарг
+  Wait Until Element Is Visible  xpath=//a[@role="button" and @aria-expanded="false" and contains(.,"${tmp_hacked_title}")]
+  Sleep  5
+  Click Element  xpath=//a[@role="button" and @aria-expanded="false" and contains(.,"${tmp_hacked_title}")]
+  Sleep  5
+  Wait Until Element Is Visible  xpath=(//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
+  Sleep  10
+  scrollIntoView by script using xpath  (//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
+  sleep   2
+  JavaScript scrollBy  0  -100
+  sleep   2
+  Click Element  xpath=(//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]
+  Sleep  5
+  ${resolution}=      Get From Dictionary  ${answer_data.data}  resolution
+  ${resolutionType}=  Get From Dictionary  ${answer_data.data}  resolutionType
+  ${tendererAction}=  Get From Dictionary  ${answer_data.data}  tendererAction
+  Input text  id=tenderAction   ${tendererAction}
+  Input text  id=descriptionEl  ${resolution}
+  Select From List By Value  id=resolutionTypeEl  ${resolutionType}
+  Sleep  1
+  Click Element  id=btnanswerComplaint
+
 temporary keyword for title update
   [Arguments]  ${lot_claim_data}  ${complaintID}
   ${tmp_hacked_title}=  Get From Dictionary  ${lot_claim_data.claim.data}  title
   ${tmp_hacked_id}=     Get From Dictionary  ${lot_claim_data}             complaintID
   [return]  ${tmp_hacked_title}
+
+Завантажити документ рішення кваліфікаційної комісії
+  [Arguments]  ${username}  ${document}  ${tender_uaid}  ${award_num}
+
+  # TODO: is this sleep really necessary? Regular synchronization wait is not enough?
+  Sleep   120
+
+  # TODO: rework duplicated code - see "Створити постачальника, додати документацію і підтвердити його"
+  etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ пропозицій
+  Click Element  xpath=//a[@data-target="#modalGetAwards"]  # button - Оцінка документів Кандидата
+  Select From List By Label  id=docType  Повідомлення про рішення
+  Sleep   5
+  # TODO: Rework this tricky behavior someday?
+  # Autotest cannot upload file directly, because there is no INPUT element on page. Need to click on button first,
+  # but this will open OS file selection dialog. So we close and reopen browser to get rid of this dialog
+  ${tmp_location}=  Get Location
+  Click Element   xpath=//button[@ng-model="lists.documentsToAdd"]
+  Choose File     xpath=//input[@type="file" and @ng-model="lists.documentsToAdd"]  ${document}
+  Sleep   4
+  Click Element   xpath=//button[@ng-click="downloadDocsGetAward(lists.documentsToAdd)"]
+  Sleep   1
+  Close Browser
+  etender.Підготувати клієнт для користувача  ${username}
+  Go To  ${tmp_location}
+  Sleep  5
+  Відкрити розділ пропозицій
+  Wait Until Keyword Succeeds   10 min  20 x  Wait for upload  # there: button - Оцінка документів Кандидата
+  Reload Page
+
+Підтвердити постачальника
+  [Arguments]  ${username}  ${tender_uaid}  ${award_num}
+  # TODO: rework duplicated code - see "Створити постачальника, додати документацію і підтвердити його"
+  etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Sleep   4
+  Відкрити розділ пропозицій
+  Click Element  xpath=//a[@data-target="#modalGetAwards"]  # button - Оцінка документів Кандидата
+  Sleep   1
+  Click Element  xpath=//button[@ng-click="getAwardsNextStep()"]        # button - Наступний крок
+  Sleep  5
+  Click Element  xpath=//button[@click-and-block="setDecision(1)"]      # button - Підтвердити
+  Sleep  5
