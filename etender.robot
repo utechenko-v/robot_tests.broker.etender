@@ -74,13 +74,13 @@ ${locator.awards[0].suppliers[0].identifier.id}                xpath=//span[@id=
 ${locator_document_title}                                      xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]
 ${locator_document_href}                                       xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]@href
 ${locator_document_description}                                xpath=//td[contains(@class,"doc-name")]//a[contains(.,"XX_doc_id_XX")]/following-sibling::p
-${locator_lot_title}                                           xpath=//div[@id="treeLot-00-0"]//*[@id="lotTitle_0"]
-${locator_lot_description}                                     xpath=//div[@id="treeLot-00-0"]//*[@id="lotDescription_0"]
+${locator_lot_title}                                           xpath=//div[@id="treeLot0"]//*[@id="lotTitle_0"]
+${locator_lot_description}                                     xpath=//div[@id="treeLot0"]//*[@id="lotDescription_0"]
 ${locator_lot_value.currency}                                  id=lotCurrency_0
 ${locator_lot_value.amount}                                    id=lotValue_0
 ${locator_lot_value.valueAddedTaxIncluded}                     xpath=//tender-subject-info//*[@id="lotVatInc_0"]
-${locator_lot_minimalStep.amount}                              xpath=//div[@id="treeLot-00-0"]//*[@id="lotMinimalStep_0"]
-${locator_lot_minimalStep.currency}                            xpath=//div[@id="treeLot-00-0"]//*[@id="lotMinimalStep_0"]
+${locator_lot_minimalStep.amount}                              xpath=//div[@id="treeLot0"]//*[@id="lotMinimalStep_0"]
+${locator_lot_minimalStep.currency}                            xpath=//div[@id="treeLot0"]//*[@id="lotMinimalStep_0"]
 ${locator_lot_minimalStep.valueAddedTaxIncluded}               xpath=//tender-subject-info//*[@id="lotVatInc_0"]
 ${locator.value.currency}                                      id=tenderCurrency
 ${locator.value.valueAddedTaxIncluded}                         id=includeVat
@@ -199,11 +199,11 @@ Login
   Додати end_date_time при наявності          ${ARGUMENTS[1]}
   Input text    id=lotValue_0        ${budgetToStr}
   Sleep   1
-  scrollIntoView by script using xpath  //div[contains(@class,"row") and (not(contains(@class,"controls")))]//div[(not(contains(@class,"hidden")))]/label/input[@id="valueAddedTaxIncluded"]  # checkbox ПДВ
+  scrollIntoView by script using xpath  //input[@id="taxIncluded"]  # checkbox ПДВ
   sleep   2
   JavaScript scrollBy  0  -100
   sleep   2
-  Click Element    xpath=//div[contains(@class,"row") and (not(contains(@class,"controls")))]//div[(not(contains(@class,"hidden")))]/label/input[@id="valueAddedTaxIncluded"]
+  Click Element    xpath=//input[@id="taxIncluded"]  # checkbox ПДВ
   Додати мінімальний крок при наявності  ${ARGUMENTS[1].data}
   Sleep   1
   Додати предмети  ${methodType}  ${items}
@@ -1941,13 +1941,13 @@ Wait for upload
   Sleep  5
   Click Element  xpath=//a[@role="button" and @aria-expanded="false" and contains(.,"${tmp_hacked_title}")]
   Sleep  5
-  Wait Until Element Is Visible  xpath=(//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
+  Wait Until Element Is Visible  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
   Sleep  10
-  scrollIntoView by script using xpath  (//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
+  scrollIntoView by script using xpath  (//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
   sleep   2
   JavaScript scrollBy  0  -100
   sleep   2
-  Click Element  xpath=(//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]
+  Click Element  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]
   Sleep  5
   ${resolution}=      Get From Dictionary  ${answer_data.data}  resolution
   ${resolutionType}=  Get From Dictionary  ${answer_data.data}  resolutionType
@@ -1971,13 +1971,13 @@ Wait for upload
   Sleep  5
   Click Element  xpath=//a[@role="button" and @aria-expanded="false" and contains(.,"${tmp_hacked_title}")]
   Sleep  5
-  Wait Until Element Is Visible  xpath=(//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
+  Wait Until Element Is Visible  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
   Sleep  10
-  scrollIntoView by script using xpath  (//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
+  scrollIntoView by script using xpath  (//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
   sleep   2
   JavaScript scrollBy  0  -100
   sleep   2
-  Click Element  xpath=(//button[@click-and-block="showAnswerComplaintModal(currentComplaint)"])[1]
+  Click Element  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]
   Sleep  5
   ${resolution}=      Get From Dictionary  ${answer_data.data}  resolution
   ${resolutionType}=  Get From Dictionary  ${answer_data.data}  resolutionType
