@@ -155,6 +155,7 @@ Login
   log to console  check presence of procurementMethodType in dictionary: ${status}
   ${methodType}=  Run Keyword IF  '${status}' != 'PASS'  Set Variable  belowThreshold
   ...             ELSE  Set Variable  ${methodType}
+  Set To Dictionary  ${USERS.users['${ARGUMENTS[0]}']}  method_type=${methodType}
 
   ${search_tab}=  Run Keyword IF  '${methodType}' != 'negotiation'  Set Variable  КОНКУРЕНТНІ ПРОЦЕДУРИ
   ...             ELSE  Set Variable  НЕКОНКУРЕНТНІ ПРОЦЕДУРИ
@@ -1885,14 +1886,25 @@ Wait for upload
   sleep   2
   Click Element  xpath=//a[.="Редагувати інформацію про договір "]
   Sleep  10
+  ${methodType}=  Get From Dictionary  ${USERS.users['${username}']}  method_type
+  Run Keyword If  '${methodType}' == 'aboveThresholdEU'  Підтвердити контракт додаванням ЕЦП
+  Run Keyword If  '${methodType}' == 'aboveThresholdUA'  Підтвердити контракт додаванням ЕЦП
+  scrollIntoView by script using xpath  //button[@click-and-block="sign()"]
+  sleep   2
+  JavaScript scrollBy  0  -100
+  sleep   2
+  Click Element  xpath=//button[@click-and-block="sign()"]  # button - Завершити закупівлю
+  Sleep  1
+  Capture Page Screenshot
+  Wait Until Page Contains  Підтверджено!  60
 
+Підтвердити контракт додаванням ЕЦП
   scrollIntoView by script using xpath  //button[@click-and-block="showSignModalContract(contract)"]
   sleep   2
   JavaScript scrollBy  0  -100
   sleep   2
   Click Element  xpath=//button[@click-and-block="showSignModalContract(contract)"]  # button - Накласти ЕЦП на договір
   Sleep  5
-
   # now - sign! again ---------------------------------------------------------
   Select From List By Label  id=CAsServersSelect  Тестовий ЦСК АТ "ІІТ"
   ${key_dir}=  Normalize Path  ${CURDIR}/../../
@@ -1915,15 +1927,6 @@ Wait for upload
   Capture Page Screenshot
   Reload Page
   Sleep  5
-
-  scrollIntoView by script using xpath  //button[@click-and-block="sign()"]
-  sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
-  Click Element  xpath=//button[@click-and-block="sign()"]  # button - Завершити закупівлю
-  Sleep  1
-  Capture Page Screenshot
-  Wait Until Page Contains  Підтверджено!  60
 
 Відповісти на вимогу про виправлення умов закупівлі
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}
