@@ -30,6 +30,7 @@ ${locator.enquiryPeriod.startDate}                             id=enquiryStart
 ${locator.enquiryPeriod.endDate}                               id=enquiryEnd
 ${locator.causeDescription}                                    id=causeDescription
 ${locator.cause}                                               id=cause
+${locator.qualificationPeriod.endDate}                         id=qualificationPeriod_endDate
 ${locator.contracts[0].status}                                 xpath=//div[@class = 'row']/div[contains(.,'Статус договору:')]/following-sibling::div
 ${locator.items[0].description}                                id=item_description_00
 ${locator.items[0].deliveryDate.startDate}                     id=delivery_start_00
@@ -1008,6 +1009,12 @@ Check Is Element Loaded
   ${new_value}=  float_to_string_2f  ${new_value}  # at least 2 fractional point precision, avoid rounding
   Input text  id=minimalStep_0  ${new_value}
 
+Отримати документ до лоту
+  [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${doc_id}
+  Відкрити розділ опис закупівлі
+  Click Element     id=openAllLots
+  Sleep  2
+  Run Keyword And Return  etender.Отримати документ  ${username}  ${tender_uaid}  ${doc_id}
 
 Отримати інформацію про status
   Reload Page
@@ -1028,6 +1035,10 @@ Check Is Element Loaded
 Отримати інформацію про title
   ${return_value}=   Отримати текст із поля і показати на сторінці   title
   [return]  ${return_value}
+
+Отримати інформацію про qualificationPeriod.endDate
+  ${datetime}=      Отримати текст із поля і показати на сторінці  qualificationPeriod.endDate
+  Run Keyword And Return  convert_etender_date_to_iso_format  ${datetime}
 
 Отримати інформацію про description
   ${return_value}=   Отримати текст із поля і показати на сторінці   description
@@ -1555,7 +1566,6 @@ Check Is Element Loaded
 
 Отримати документ
   [Arguments]  ${username}  ${tender_uaid}  ${doc_id}
-  Switch browser   ${username}
   ${title}=  etender.Отримати інформацію із документа  ${username}  ${tender_uaid}  ${doc_id}  title
   ${prepared_locator}=  Set Variable  ${locator_document_href.replace('XX_doc_id_XX','${doc_id}')}
   log  ${prepared_locator}
@@ -1620,11 +1630,8 @@ Check Is Element Loaded
 
 Отримати інформацію із нецінового показника
   [Arguments]  ${username}  ${tender_uaid}  ${object_id}  ${field_name}
-  Switch browser   ${username}
   Reload Page
   Sleep  4
-  ${prepared_locator}=  Set Variable  ${locator_feature_${field_name}.replace('XX_feature_id_XX','${object_id}')}
-  log  ${prepared_locator}
   ${open_item_feature_locator}=  Set Variable  //div[contains(@ng-if,"lot.items") and contains(@id,"tree")]//span[@data-toggle="collapse"]/span[contains(.,"критерії оцінки")]
   Run Keyword And Ignore Error  scrollIntoView by script using xpath  ${open_item_feature_locator}
   sleep   2
@@ -1632,21 +1639,20 @@ Check Is Element Loaded
   sleep   2
   Run Keyword And Ignore Error  Click Element  xpath=${open_item_feature_locator}  # open Нецінові (якісні) критерії оцінки section to make its text visible
   Sleep  2
-  Wait Until Page Contains Element  ${prepared_locator}  10
-  ${raw_value}=   Get Text  ${prepared_locator}
-  Run Keyword And Return  Конвертувати інформацію із нецінового показника про ${field_name}  ${raw_value}
 
-Конвертувати інформацію із нецінового показника про title
-  [Arguments]  ${return_value}
-  [return]  ${return_value}
+  Run Keyword And Return  Отримати інформацію із нецінового показника про ${field_name}  ${object_id}
 
-Конвертувати інформацію із нецінового показника про description
-  [Arguments]  ${return_value}
-  [return]  ${return_value}
+Отримати інформацію із нецінового показника про title
+  [Arguments]  ${object_id}
+  Run Keyword And Return  Get Text  xpath=//span[contains(.,'${object_id}')]
 
-Конвертувати інформацію із нецінового показника про featureOf
-  [Arguments]  ${return_value}
-  [return]  ${return_value}
+Отримати інформацію із нецінового показника про description
+  [Arguments]  ${object_id}
+  Run Keyword And Return  Get Text  xpath=//span[contains(.,'${object_id}')]/../../..//span[contains(@ng-bind, "description")]
+
+Отримати інформацію із нецінового показника про featureOf
+  [Arguments]  ${object_id}
+  Run Keyword And Return  Get Element Attribute  xpath=//span[contains(.,'${object_id}')]@name
 
 Відкрити розділ опис закупівлі
   scrollIntoView by script using xpath  //li[@id="naviTitle0"]/span  # scroll to опис закупівлі tab
