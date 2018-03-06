@@ -2015,7 +2015,7 @@ temporary keyword for title update
   Choose File     xpath=//input[@type="file" and @ng-model="lists.documentsToAdd"]  ${document}
   Sleep   4
   Click Element   xpath=//button[@ng-click="downloadDocsGetAward(lists.documentsToAdd)"]
-  Sleep   1
+  Wait Until Page Contains  Документи завантажено! Очікуйте синхронізацію з ЦБД.  30
   Close Browser
   etender.Підготувати клієнт для користувача  ${username}
   Go To  ${tmp_location}
