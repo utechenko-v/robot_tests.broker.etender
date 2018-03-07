@@ -201,11 +201,11 @@ Login
   Додати end_date_time при наявності          ${ARGUMENTS[1]}
   Input text    id=lotValue_0        ${budgetToStr}
   Sleep   1
-  scrollIntoView by script using xpath  //input[@id="taxIncluded"]  # checkbox ПДВ
+  scrollIntoView by script using xpath  //input[@id="valueAddedTaxIncluded"]  # checkbox ПДВ
   sleep   2
   JavaScript scrollBy  0  -100
   sleep   2
-  Click Element    xpath=//input[@id="taxIncluded"]  # checkbox ПДВ
+  Click Element    xpath=//input[@id="valueAddedTaxIncluded"]  # checkbox ПДВ
   Додати мінімальний крок при наявності  ${ARGUMENTS[1].data}
   Sleep   1
   Додати предмети  ${methodType}  ${items}
@@ -772,7 +772,7 @@ Enter enquiry date
   [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=1
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   Відкрити розділ пропозицій
-  Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
+  Натиснути редагувати пропозицію
   Run Keyword And Ignore Error  Обрати конфіденційність документа
   ${doc_type}=          get_doc_type_index          ${doc_type}
   Select From List By Index     id=bidDocType_      ${doc_type}
@@ -861,13 +861,13 @@ Enter enquiry date
   [Arguments]  ${value}
   Натиснути редагувати пропозицію
   Input String      id=amount0       ${value}
-  Click Element     xpath=//button[contains(@click-and-block, 'updateBid(bid)')]
+  Click Element     id=updateBid_0
 
 Підтвердити пропозицію
   Click Element     id=confirmBid_0
 
 Натиснути редагувати пропозицію
-  Click Element     xpath=//button[contains(@ng-click, 'changeEditBidClicked()')]
+  Click Element     id=editBid_0
 
 Скасувати цінову пропозицію
   [Arguments]  @{ARGUMENTS}
@@ -1037,6 +1037,7 @@ Check Is Element Loaded
   [return]  ${return_value}
 
 Отримати інформацію про qualificationPeriod.endDate
+  Reload Page
   ${datetime}=      Отримати текст із поля і показати на сторінці  qualificationPeriod.endDate
   Run Keyword And Return  convert_etender_date_to_iso_format  ${datetime}
 
