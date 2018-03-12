@@ -1028,7 +1028,7 @@ Check Is Element Loaded
 
 Отримати текст із поля і показати на сторінці
   [Arguments]   ${fieldname}
-  Wait Until Page Contains Element    ${locator.${fieldname}}    1
+  Wait Until Element Is Visible    ${locator.${fieldname}}    1
   ${return_value}=   Get Text  ${locator.${fieldname}}
   [return]  ${return_value}
 
