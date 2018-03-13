@@ -1708,11 +1708,7 @@ Check Is Element Loaded
   ${telephone}=  Get From Dictionary   ${USERS.users['${username}'].supplier_data.data.suppliers[0].contactPoint}  telephone
   Set To Dictionary  ${USERS.users['${username}'].supplier_data.data.suppliers[0].contactPoint}  telephone=${telephone.replace('-', '')}
   Sleep  30
-  Reload Page
-  Sleep  5
-  scrollIntoView by script using xpath  //button[contains(.,"Перейти до підпису")]
-  Click Element  xpath=//button[contains(.,"Перейти до підпису")]
-  Sleep  10
+  Wait Until Keyword Succeeds   10 min  20 x  Wait for upload before signing  # there: button - Перейти до підпису"
   Select From List By Label  id=CAsServersSelect  Тестовий ЦСК АТ "ІІТ"
   ${key_dir}=  Normalize Path  ${CURDIR}/../../
   Choose File  id=PKeyFileInput  ${key_dir}/Key-6.dat
@@ -1813,13 +1809,7 @@ Check Is Element Loaded
   Click Element  xpath=//div[@id="modalSign"]//button[contains(@class,"close")]
   Sleep  30
 # shall be signed here -------------------------------------------------------------
-  Reload Page
-  Sleep  5
-  Відкрити розділ пропозицій
-  Click Element  xpath=//a[@data-target="#modalGetAwards"]              # button - Оцінка документів Кандидата
-  Capture Page Screenshot
-  Sleep  5
-  Capture Page Screenshot
+  Wait Until Keyword Succeeds   10 min  20 x  Wait for upload  # there: button - Оцінка документів Кандидата
   Click Element  xpath=//button[@ng-click="getAwardsNextStep()"]        # button - Наступний крок
   Capture Page Screenshot
   Sleep  5
@@ -1839,6 +1829,16 @@ Wait for upload
   Click Element  xpath=//a[@data-target="#modalGetAwards"]              # button - Оцінка документів Кандидата
   Sleep  5
   Page Should Not Contain  Не всі документи експортовані
+
+Wait for upload before signing
+  Reload Page
+  Sleep  10
+  scrollIntoView by script using xpath  //button[contains(.,"Перейти до підпису")]
+  Click Element  xpath=//button[contains(.,"Перейти до підпису")]
+  Sleep  1
+  Page Should Not Contain  Не всі документи експортовані
+  Page Should Not Contain  Не всі документи экспортовано до Центральної бази.
+  Wait Until Element Is Visible  id=CAsServersSelect
 
 Підтвердити підписання контракту
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}
