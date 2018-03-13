@@ -476,6 +476,21 @@ add feature lot
   Sleep  1
   Click Element  xpath=//div[@id="addClassification" and contains(@class,"modal")]//*[@id="addClassification_choose"]
 
+Вказати ДК015 дотаткову класифікацію
+  [Arguments]  ${additionalClassification}  ${index}
+  dbg2  what is this?
+  ${description}=  Get From Dictionary  ${additionalClassification}  description
+  Click Element  id=openAddClassificationModal0${index}0
+  Sleep  3
+  Select From List By Value  xpath=//div[@id="addClassification" and contains(@class,"modal")]//select[@name="dkScheme"]  ДК015
+  Sleep  3
+  Input text     xpath=//div[@id="addClassification" and contains(@class,"modal")]//input  ${description}
+  Wait Until Element Is Visible  xpath=//td[contains(., '${description}')]
+  Sleep  2
+  Click Element  xpath=//td[contains(., '${description}')]
+  Sleep  1
+  Click Element  xpath=//div[@id="addClassification" and contains(@class,"modal")]//*[@id="addClassification_choose"]
+
 Вказати ДКПП дотаткову класифікацію
   [Arguments]  ${additionalClassification}  ${index}
   log  Це щось старе, і його мають прибрати. Не буду нічого тут робити!  WARN
