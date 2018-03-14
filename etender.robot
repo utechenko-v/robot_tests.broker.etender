@@ -107,6 +107,7 @@ ${locator_item_deliveryAddress.region}                         xpath=//p[starts-
 ${locator_item_deliveryAddress.locality}                       xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_city_")]
 ${locator_item_deliveryAddress.streetAddress}                  xpath=//p[starts-with(@id,"item_description_") and contains(.,"XX_item_id_XX")]/parent::td/parent::tr//*[starts-with(@id,"delivery_addressStr_")]
 ${huge_timeout_for_visibility}                                 300
+${locator.search_tender}                                       xpath=//input[@type='text' and @placeholder='Пошук за номером закупівлі']
 
 
 *** Keywords ***
@@ -478,7 +479,6 @@ add feature lot
 
 Вказати ДК015 дотаткову класифікацію
   [Arguments]  ${additionalClassification}  ${index}
-  dbg2  what is this?
   ${description}=  Get From Dictionary  ${additionalClassification}  description
   Click Element  id=openAddClassificationModal0${index}0
   Sleep  3
@@ -703,46 +703,27 @@ Enter enquiry date
   Click Element  xpath=${delete_button_xpath}  # delete feature button - item
 
 Клацнути і дочекатися
-  [Arguments]  ${click_locator}  ${wanted_locator}  ${timeout}
-  [Documentation]
-  ...      click_locator: Where to click
-  ...      wanted_locator: What are we waiting for
-  ...      timeout: Timeout
-  Click Link  ${click_locator}
-  Wait Until Page Contains Element  ${wanted_locator}  ${timeout}
-
-
-Шукати і знайти
-  Клацнути і дочекатися  jquery=a[ng-click='search()']  jquery=a[href^="#/tenderDetailes"]  5
-
+  [Arguments]  ${tender_link}
+  Click Link  jquery=a[ng-click='search()']
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Wait Until Page Contains Element   ${tender_link}  5
 
 Пошук тендера по ідентифікатору
-  [Arguments]  @{ARGUMENTS}
-  [Documentation]
-  ...      ${ARGUMENTS[0]} ==  username
-  ...      ${ARGUMENTS[1]} ==  ${TENDER_UAID}
-  Go To  ${USERS.users['${ARGUMENTS[0]}'].homepage}
-  Run Keyword If  '${ARGUMENTS[0]}' != 'Etender_Owner'  Run Keyword And Return  Тимчасовий Пошук тендера по ідентифікатору для Viewer  ${ARGUMENTS[0]}  ${ARGUMENTS[1]}
-  Wait Until Page Contains Element    xpath=//input[@type='text' and @placeholder='Пошук за номером закупівлі']    10
+  [Arguments]  ${username}  ${tender_uaid}  @{ARGUMENTS}
+  Reload Page
+  Run Keyword If  '${username}' != 'Etender_Owner'  Run Keyword And Return  Тимчасовий Пошук тендера по ідентифікатору для Viewer  ${username}  ${tender_uaid}
+  Go To  ${USERS.users['${username}'].homepage}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  sleep  1
-  Wait Until Element Is Visible    xpath=//input[@type='text' and @placeholder='Пошук за номером закупівлі']    10
-  Перейти на вкладку іншого типу процедур за потреби  ${ARGUMENTS[0]}
-  sleep  3
-  Input Text    xpath=//input[@type='text' and @placeholder='Пошук за номером закупівлі']    ${ARGUMENTS[1]}
-  sleep  2
-  Wait Until Page Does Not Contain   ${locator_block_overlay}
-  ${timeout_on_wait}=  Get Broker Property By Username  ${ARGUMENTS[0]}  timeout_on_wait
-  ${passed}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  ${timeout_on_wait} s  0 s  Шукати і знайти
+  Перейти на вкладку іншого типу процедур за потреби  ${username}
+  Wait Until Element Is Visible    ${locator.search_tender}    10
+  Input Text    ${locator.search_tender}    ${tender_uaid}
+  ${timeout_on_wait}=  Get Broker Property By Username  ${username}  timeout_on_wait
+  ${tender_link}=   Set Variable    xpath=//td[contains(.,'${tender_uaid}')]//a
+  ${passed}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  ${timeout_on_wait} s  0 s  Клацнути і дочекатися  ${tender_link}
   Run Keyword Unless  ${passed}  Fatal Error  Тендер не знайдено за ${timeout_on_wait} секунд
-  sleep  3
-  Wait Until Element Is Visible    xpath=//td[contains(.,'${ARGUMENTS[1]}')]/p/a[contains(@href,'#/tenderDetailes')]  10
-  Wait Until Element Is Enabled    xpath=//td[contains(.,'${ARGUMENTS[1]}')]/p/a[contains(@href,'#/tenderDetailes')]  20
+  Click Link    ${tender_link}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  sleep  1
-  Click Link    xpath=//td[contains(.,'${ARGUMENTS[1]}')]/p/a[contains(@href,'#/tenderDetailes')]
-  Wait Until Page Contains    ${ARGUMENTS[1]}   10
-  sleep  1
+  Wait Until Page Contains    ${tender_uaid}   10
 
 Тимчасовий Пошук тендера по ідентифікатору для Viewer
   [Arguments]  ${username}  ${TENDER_UAID}
@@ -756,14 +737,12 @@ Enter enquiry date
   [Arguments]  ${username}
   ${search_tab}=  Get From Dictionary  ${USERS.users['${username}']}  HELPER_SEARCH_TAB
   Return From Keyword If  '${search_tab}' == 'КОНКУРЕНТНІ ПРОЦЕДУРИ'
-  scrollIntoView by script using xpath  //*[@id="naviTitle1"]  # scroll to tab 'КОНКУРЕНТНІ ПРОЦЕДУРИ'
+  scrollIntoView by script using xpath  //*[@id="naviTitle1"]  # scroll to tab 'НЕКОНКУРЕНТНІ ПРОЦЕДУРИ'
   sleep   2
   JavaScript scrollBy  0  -100
   sleep   2
   Click Element  id=naviTitle1
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  sleep  1
-  Wait Until Element Is Visible    xpath=//input[@type='text' and @placeholder='Пошук за номером закупівлі']    10
 
 Пошук плану по ідентифікатору
   [Arguments]  ${username}  ${TENDER_UAID}
