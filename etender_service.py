@@ -172,7 +172,11 @@ def get_helper_dictionary():
         u"ст.35 ч. 2 п. 7": u"stateLegalServices",
         u"Договір поки що не опубліковано": u"pending",
         u"Договір опубліковано": u"active",
-        u"Переможець торгів": u"active"
+        u"Переможець торгів": u"active",
+        u'вимога': u'claim',
+        u'відповідь надана': u'answered',
+        u'вирішена': u'resolved',
+        u'відхилено': u'declined'
     }
 
 def get_feature_index(i):

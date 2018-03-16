@@ -885,6 +885,64 @@ Enter enquiry date
   [Arguments]  @{ARGUMENTS}
   Reload Page
 
+Створити вимогу про виправлення умов закупівлі
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${file}
+  etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
+  sleep  5
+  Відкрити розділ вимог і скарг
+  Click Element     id=addClaim
+  sleep  5
+  Input Text        id=title            ${claim.data.title}
+  Input Text        id=description      ${claim.data.description}
+  Select From List By Index     id=complaintFor     1
+  Click Element     id=btnAddComplaint
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Завантажити док  ${username}  ${file}  id=addClaimDoc
+  Відкрити розділ вимог і скарг
+  Click Element     xpath=//button[contains(.,'Опублікувати вимогу')]
+  Run Keyword And Return  Get text  xpath=//complaint[contains(.,'${claim.data.description}')]//div[@id='complaintid']
+
+
+Отримати інформацію із документа до скарги
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${doc_id}  ${field}
+  ${raw_value}=  Get Text  xpath=//a[contains(.,'${doc_id}')]
+  [Return]  ${raw_value.split(', ')[-1]}
+
+Отримати інформацію із скарги
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field}  ${award_index}
+  Відкрити розділ вимог і скарг
+  ${is_expanded}=   Get Element Attribute  xpath=//div[@id='${complaintID}']/div@aria-selected
+  Log  ${is_expanded}
+  Run Keyword If  '${is_expanded}'=='false'  Click Element  xpath=//div[@id='${complaintID}']//a
+  Run Keyword And Return  Отримати інформацію із скарги про ${field}  ${complaintID}
+
+Отримати інформацію із скарги про title
+  [Arguments]  ${complaintID}
+  Run Keyword And Return  Get Element Attribute  xpath=//div[@id='${complaintID}']//*[@name='title']@title
+
+Отримати інформацію із скарги про description
+  [Arguments]  ${complaintID}
+  Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='description']
+
+Отримати інформацію із скарги про resolutionType
+  [Arguments]  ${complaintID}
+  ${resolutionType}=      Get Text  xpath=//div[@id='${complaintID}']//*[@name='resolutionType']
+  Run Keyword And Return  convert_etender_string_to_common_string  ${resolutionType.lower()}
+
+Отримати інформацію із скарги про resolution
+  [Arguments]  ${complaintID}
+  Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='resolution']
+
+Отримати інформацію із скарги про satisfied
+  [Arguments]  ${complaintID}
+  Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='satisfied']
+
+Отримати інформацію із скарги про status
+  [Arguments]  ${complaintID}
+  Reload Page
+  Відкрити розділ вимог і скарг
+  ${status}=  Get Text  xpath=//div[@id='${complaintID}']//*[@name='status']
+  Run Keyword And Return  convert_etender_string_to_common_string  ${status.lower()}
 
 
 Відповісти на запитання
@@ -1668,10 +1726,9 @@ Check Is Element Loaded
   Wait Until Page Does Not Contain   ${locator_block_overlay}
 
 Відкрити розділ вимог і скарг
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
   scrollIntoView by script using xpath  //li[@id="naviTitle3"]/span  # scroll to complaints
-  sleep   1
   JavaScript scrollBy  0  -100
-  sleep   1
   Click Element                      xpath=//li[@id="naviTitle3"]/span  # go to complaints
   Wait Until Page Does Not Contain   ${locator_block_overlay}
 
