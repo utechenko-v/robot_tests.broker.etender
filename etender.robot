@@ -1890,6 +1890,7 @@ Wait for upload before signing
   ${methodType}=  Get From Dictionary  ${USERS.users['${username}']}  method_type
   Run Keyword If  '${methodType}' == 'aboveThresholdEU'  Підтвердити контракт додаванням ЕЦП
   Run Keyword If  '${methodType}' == 'aboveThresholdUA'  Підтвердити контракт додаванням ЕЦП
+  Run Keyword If  '${methodType}' == 'negotiation'       Підтвердити контракт додаванням ЕЦП
   scrollIntoView by script using xpath  //button[@click-and-block="sign()"]
   sleep   2
   JavaScript scrollBy  0  -100
