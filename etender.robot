@@ -1018,6 +1018,8 @@ Check Is Element Loaded
 
 Отримати інформацію із тендера
   [Arguments]  ${username}  ${tender_uaid}  ${field}
+  # TODO: It would be good to create a "smart" search, to perform search only if incorrect page opened or if page was opened too long ago
+  Run keyword if  '${field}' == 'awards[0].complaintPeriod.endDate'  etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Run Keyword And Return  Отримати інформацію про ${field}
 
 Отримати текст із поля і показати на сторінці
