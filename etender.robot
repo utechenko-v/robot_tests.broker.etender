@@ -2003,10 +2003,7 @@ temporary keyword for title update
 
 Завантажити документ рішення кваліфікаційної комісії
   [Arguments]  ${username}  ${document}  ${tender_uaid}  ${award_num}
-
-  # TODO: is this sleep really necessary? Regular synchronization wait is not enough?
-  Sleep   120
-
+  Sleep  3
   # TODO: rework duplicated code - see "Створити постачальника, додати документацію і підтвердити його"
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
