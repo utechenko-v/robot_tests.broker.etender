@@ -178,7 +178,8 @@ def get_helper_dictionary():
         u'вирішена': u'resolved',
         u'відхилено': u'declined',
         u'скасована скаржником': u'cancelled',
-        u'не задоволено': u'invalid'
+        u'не задоволено': u'invalid',
+        u'залишена без відповіді': u'ignored'
     }
 
 def get_feature_index(i):
