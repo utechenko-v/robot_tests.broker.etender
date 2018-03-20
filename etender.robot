@@ -303,8 +303,6 @@ add feature tender
   ${options}=      Get From Dictionary  ${feature}  enum
   scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"tender")]//span[@ng-click="addFeature()"]  # scroll to addFeature button - tender
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click element  xpath=//add-features[contains(@feature-sector,"tender")]//span[@ng-click="addFeature()"]
   Sleep    2
   Input text  name=feature-tender${feature_index}  ${title}
@@ -312,6 +310,7 @@ add feature tender
   Sleep    2
   ${number_of_options}=  Get Length  ${options}
   :FOR  ${i}  IN RANGE  ${number_of_options}
+  \     scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"tender")]//button[@ng-click="addFeatureOption(feature)"]
   \     Click element  xpath=//add-features[contains(@feature-sector,"tender")]//button[@ng-click="addFeatureOption(feature)"]
   \     Sleep    2
   \     ${opt_title}=  Get From Dictionary  ${feature.enum[${i}]}  title
