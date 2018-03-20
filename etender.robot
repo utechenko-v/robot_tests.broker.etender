@@ -935,7 +935,10 @@ Enter enquiry date
 
 Отримати інформацію із скарги про satisfied
   [Arguments]  ${complaintID}
-  Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='satisfied']
+  ${satisfied}=  Get Text  xpath=//div[@id='${complaintID}']//*[@name='satisfied']
+  ${satisfied}=  Set Variable  ${satisfied.replace(u'Так',u'True' )}
+  ${satisfied}=  Set Variable  ${satisfied.replace(u'Ні', u'False')}
+  Run Keyword And Return  Convert To Boolean  ${satisfied}
 
 Отримати інформацію із скарги про status
   [Arguments]  ${complaintID}
@@ -944,6 +947,9 @@ Enter enquiry date
   ${status}=  Get Text  xpath=//div[@id='${complaintID}']//*[@name='status']
   Run Keyword And Return  convert_etender_string_to_common_string  ${status.lower()}
 
+Отримати інформацію із скарги про cancellationReason
+  [Arguments]  ${complaintID}
+  Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='cancellationReason']
 
 Відповісти на запитання
   [Arguments]  ${username}  ${tender_uaid}  ${answer_data}  ${question_id}

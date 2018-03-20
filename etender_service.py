@@ -176,7 +176,9 @@ def get_helper_dictionary():
         u'вимога': u'claim',
         u'відповідь надана': u'answered',
         u'вирішена': u'resolved',
-        u'відхилено': u'declined'
+        u'відхилено': u'declined',
+        u'скасована скаржником': u'cancelled',
+        u'не задоволено': u'invalid'
     }
 
 def get_feature_index(i):
