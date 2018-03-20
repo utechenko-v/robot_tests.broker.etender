@@ -987,7 +987,9 @@ Enter enquiry date
 
 scrollIntoView by script using xpath
   [Arguments]  ${xpath_locator}
+  [Documentation]  use xpath with "double quotes"
   Execute JavaScript  document.evaluate('${xpath_locator}', document.documentElement, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).scrollIntoView();
+  JavaScript scrollBy  0  -100
 
 JavaScript scrollBy
   [Arguments]  ${x_offset}  ${y_offset}
