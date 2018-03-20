@@ -234,9 +234,9 @@ Login
   ${description}=  Get From Dictionary  ${lots[0]}  description
   Click Element  id=isMultilots  # checkbox Мультилотова закупівля
   Sleep  2
-  Input text     id=lotTitle0  ${title}
+  Input text     id=lotTitle_0  ${title}
   Sleep  1
-  Input text     id=lotDescription0  ${description}
+  Input text     id=lotDescription_0  ${description}
   Sleep  1
 
 Додати нецінові показники при наявності
