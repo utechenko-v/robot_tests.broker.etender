@@ -204,8 +204,6 @@ Login
   Sleep   1
   scrollIntoView by script using xpath  //input[@id="valueAddedTaxIncluded"]  # checkbox ПДВ
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element    xpath=//input[@id="valueAddedTaxIncluded"]  # checkbox ПДВ
   Додати мінімальний крок при наявності  ${ARGUMENTS[1].data}
   Sleep   1
@@ -328,8 +326,6 @@ add feature item
   ${options}=      Get From Dictionary  ${feature}  enum
   scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"item")]//span[@ng-click="addFeature()"]  # scroll to addFeature button - item
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click element  xpath=//add-features[contains(@feature-sector,"item")]//span[@ng-click="addFeature()"]
   Sleep    2
   Input text  name=feature-item${feature_index}  ${title}
@@ -338,8 +334,6 @@ add feature item
   ${number_of_options}=   Get Length              ${options}
   :FOR  ${i}  IN RANGE  ${number_of_options}
   \     scrollIntoView by script using xpath  (//add-features[contains(@feature-sector,"item")]//button[@ng-click="addFeatureOption(feature)"])[${feature_index}+1]  # addFeatureOption - item
-  \     sleep   2
-  \     JavaScript scrollBy  0  -100
   \     sleep   2
   \     Click element  xpath=(//add-features[contains(@feature-sector,"item")]//button[@ng-click="addFeatureOption(feature)"])[${feature_index}+1]
   \     Sleep    2
@@ -358,8 +352,6 @@ add feature lot
   ${options}=      Get From Dictionary  ${feature}  enum
   scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"lot")]//span[@ng-click="addFeature()"]  # scroll to addFeature button - lot
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click element  xpath=//add-features[contains(@feature-sector,"lot")]//span[@ng-click="addFeature()"]
   Sleep    2
   Input text  name=feature-lot${feature_index}  ${title}
@@ -368,8 +360,6 @@ add feature lot
   ${number_of_options}=   Get Length              ${options}
   :FOR  ${i}  IN RANGE  ${number_of_options}
   \     scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"lot")]//button[@ng-click="addFeatureOption(feature)"]  # addFeatureOption - lot
-  \     sleep   2
-  \     JavaScript scrollBy  0  -100
   \     sleep   2
   \     Click element  xpath=//add-features[contains(@feature-sector,"lot")]//button[@ng-click="addFeatureOption(feature)"]
   \     Sleep    2
@@ -623,8 +613,6 @@ Enter enquiry date
   Sleep  5
   scrollIntoView by script using xpath  //input[@id="openClassificationModal0${index}"]  # openClassificationModal - main
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  id=openClassificationModal0${index}
   Sleep  1
   Input text     id=classificationCode  ${cpv}
@@ -697,8 +685,6 @@ Enter enquiry date
   ${delete_button_xpath}=  Set Variable  (//add-features[contains(@feature-sector,"item")]//button[@ng-click="removeFeature($index)"])[${feature_index}+1]
   scrollIntoView by script using xpath  ${delete_button_xpath}
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  xpath=${delete_button_xpath}  # delete feature button - item
 
 Клацнути і дочекатися
@@ -737,8 +723,6 @@ Enter enquiry date
   ${search_tab}=  Get From Dictionary  ${USERS.users['${username}']}  HELPER_SEARCH_TAB
   Return From Keyword If  '${search_tab}' == 'КОНКУРЕНТНІ ПРОЦЕДУРИ'
   scrollIntoView by script using xpath  //*[@id="naviTitle1"]  # scroll to tab 'НЕКОНКУРЕНТНІ ПРОЦЕДУРИ'
-  sleep   2
-  JavaScript scrollBy  0  -100
   sleep   2
   Click Element  id=naviTitle1
   Wait Until Page Does Not Contain   ${locator_block_overlay}
@@ -959,28 +943,18 @@ Enter enquiry date
   Відкрити розділ запитань
   scrollIntoView by script using xpath  //*[@id="addAnswer_0"]  # scroll to addAnswer button
   sleep   4
-  JavaScript scrollBy  0  -100
-  sleep   4
   Click Element                      id=addAnswer_0
-
   scrollIntoView by script using xpath  //*[@id="questionContainer"]/form/div/textarea  # scroll to questionContainer
   sleep   4
-  JavaScript scrollBy  0  -100
-  sleep   4
   Input text                         xpath=//*[@id="questionContainer"]/form/div/textarea            ${answer}
-
   sleep   2
   scrollIntoView by script using xpath  //*[@id="questionContainer"]/form/div/span/button[1]  # scroll to submit answer V-button
-  sleep   4
-  JavaScript scrollBy  100  -100
   sleep   4
   Click Element                      xpath=//*[@id="questionContainer"]/form/div/span/button[1]
   sleep  5
 
 Відкрити розділ запитань
   scrollIntoView by script using xpath  //li[@id="naviTitle2"]/span  # scroll to questions tab
-  sleep   1
-  JavaScript scrollBy  0  -100
   sleep   1
   Click Element                      xpath=//li[@id="naviTitle2"]/span  # go to questions tab
   Wait Until Page Does Not Contain   ${locator_block_overlay}
@@ -1697,8 +1671,6 @@ Check Is Element Loaded
   ${open_item_feature_locator}=  Set Variable  //div[contains(@ng-if,"lot.items") and contains(@id,"tree")]//span[@data-toggle="collapse"]/span[contains(.,"критерії оцінки")]
   Run Keyword And Ignore Error  scrollIntoView by script using xpath  ${open_item_feature_locator}
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Run Keyword And Ignore Error  Click Element  xpath=${open_item_feature_locator}  # open Нецінові (якісні) критерії оцінки section to make its text visible
   Sleep  2
 
@@ -1719,15 +1691,11 @@ Check Is Element Loaded
 Відкрити розділ опис закупівлі
   scrollIntoView by script using xpath  //li[@id="naviTitle0"]/span  # scroll to опис закупівлі tab
   sleep   1
-  JavaScript scrollBy  0  -100
-  sleep   1
   Click Element                      xpath=//li[@id="naviTitle0"]/span  # go to опис закупівлі tab
 
 Відкрити розділ пропозицій
   sleep   1
   scrollIntoView by script using xpath  //li[@id="naviTitle1"]/span  # scroll to bids tab
-  sleep   1
-  JavaScript scrollBy  0  -100
   sleep   1
   Click Element                      xpath=//li[@id="naviTitle1"]/span  # go to bids tab
   Wait Until Page Does Not Contain   ${locator_block_overlay}
@@ -1735,14 +1703,11 @@ Check Is Element Loaded
 Відкрити розділ вимог і скарг
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   scrollIntoView by script using xpath  //li[@id="naviTitle3"]/span  # scroll to complaints
-  JavaScript scrollBy  0  -100
   Click Element                      xpath=//li[@id="naviTitle3"]/span  # go to complaints
   Wait Until Page Does Not Contain   ${locator_block_overlay}
 
 Відкрити розділ контактні дані
   scrollIntoView by script using xpath  //li[@id="naviTitle4"]/span  # scroll to контактні дані
-  sleep   1
-  JavaScript scrollBy  0  -100
   sleep   1
   Click Element                      xpath=//li[@id="naviTitle4"]/span  # go to контактні дані
 
@@ -1869,8 +1834,6 @@ Wait for upload
   Sleep  10
   scrollIntoView by script using xpath  //a[@data-target="#modalGetAwards"]  # button - Оцінка документів Кандидата
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  xpath=//a[@data-target="#modalGetAwards"]              # button - Оцінка документів Кандидата
   Sleep  5
   Page Should Not Contain  Не всі документи експортовані
@@ -1906,8 +1869,6 @@ Wait for upload before signing
   Input text  name=endDate     ${date_future_tmp}
   scrollIntoView by script using xpath  //button[@data-target="#saveData"]  # button - Опублікувати документи та завершити пізніше
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  xpath=//button[@data-target="#saveData"]  # button - Опублікувати документи та завершити пізніше
   Sleep  10
   Click Element  xpath=//div[@id="saveData"]//button[@ng-click="save(documentsToAdd)"]
@@ -1920,8 +1881,6 @@ Wait for upload before signing
   Capture Page Screenshot
   Відкрити розділ пропозицій
   scrollIntoView by script using xpath  //a[.="Редагувати інформацію про договір "]
-  sleep   2
-  JavaScript scrollBy  0  -100
   sleep   2
   Click Element  xpath=//a[.="Редагувати інформацію про договір "]
   Sleep  10
@@ -1949,8 +1908,6 @@ Wait for upload before signing
   Відкрити розділ пропозицій
   scrollIntoView by script using xpath  //a[.="Редагувати інформацію про договір "]
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  xpath=//a[.="Редагувати інформацію про договір "]
   Sleep  10
   ${methodType}=  Get From Dictionary  ${USERS.users['${username}']}  method_type
@@ -1959,8 +1916,6 @@ Wait for upload before signing
   Run Keyword If  '${methodType}' == 'negotiation'       Підтвердити контракт додаванням ЕЦП
   scrollIntoView by script using xpath  //button[@click-and-block="sign()"]
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  xpath=//button[@click-and-block="sign()"]  # button - Завершити закупівлю
   Sleep  1
   Capture Page Screenshot
@@ -1968,8 +1923,6 @@ Wait for upload before signing
 
 Підтвердити контракт додаванням ЕЦП
   scrollIntoView by script using xpath  //button[@click-and-block="showSignModalContract(contract)"]
-  sleep   2
-  JavaScript scrollBy  0  -100
   sleep   2
   Click Element  xpath=//button[@click-and-block="showSignModalContract(contract)"]  # button - Накласти ЕЦП на договір
   Sleep  5
@@ -2016,8 +1969,6 @@ Wait for upload before signing
   Sleep  10
   scrollIntoView by script using xpath  (//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
   sleep   2
-  JavaScript scrollBy  0  -100
-  sleep   2
   Click Element  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]
   Sleep  5
   ${resolution}=      Get From Dictionary  ${answer_data.data}  resolution
@@ -2045,8 +1996,6 @@ Wait for upload before signing
   Wait Until Element Is Visible  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
   Sleep  10
   scrollIntoView by script using xpath  (//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]  # button - відповісти
-  sleep   2
-  JavaScript scrollBy  0  -100
   sleep   2
   Click Element  xpath=(//button[@ng-click="showAnswerComplaintModal(currentComplaint)"])[1]
   Sleep  5
