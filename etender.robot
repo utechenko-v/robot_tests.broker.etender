@@ -549,6 +549,7 @@ Enter enquiry date
   # Autotest cannot upload file directly, because there is no INPUT element on page. Need to click on button first,
   # but this will open OS file selection dialog. So we close and reopen browser to get rid of this dialog
   ${tmp_location}=  Get Location
+  scrollIntoView by script using xpath  ${locator}
   Click Element   ${locator}
   Choose File     xpath=//input[@type="file"]  ${file}
   Sleep   4
@@ -868,23 +869,72 @@ Enter enquiry date
   [Arguments]  @{ARGUMENTS}
   Reload Page
 
+Створити вимогу про виправлення умов лоту
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${lot_id}  ${file}
+  Run Keyword And Return  Створити вимогу про виправлення умов  ${username}  ${tender_uaid}  ${claim}  ${lot_id}  ${file}
+
 Створити вимогу про виправлення умов закупівлі
   [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${file}
+  Run Keyword And Return  Створити вимогу про виправлення умов  ${username}  ${tender_uaid}  ${claim}  тендер  ${file}
+
+Створити вимогу про виправлення умов
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${target}  ${file}
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   sleep  5
+  ${complaintID}=  Створити чернетку вимоги  ${username}  ${tender_uaid}  ${claim}  ${target}
+  Завантажити док  ${username}  ${file}  //*[@id="addClaimDoc"]  #xpath because of scrolling keyword
   Відкрити розділ вимог і скарг
+  Click Element     xpath=//button[contains(.,'Опублікувати вимогу')]
+  [Return]  ${complaintID}
+
+Створити чернетку вимоги
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${target}
+  Відкрити розділ вимог і скарг
+  scrollIntoView by script using xpath  //*[@id="addClaim"]
   Click Element     id=addClaim
   sleep  5
   Input Text        id=title            ${claim.data.title}
   Input Text        id=description      ${claim.data.description}
-  Select From List By Index     id=complaintFor     1
+  Select From List By Partial Label     id=complaintFor  ${target}
   Click Element     id=btnAddComplaint
+  Sleep  10
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Завантажити док  ${username}  ${file}  id=addClaimDoc
-  Відкрити розділ вимог і скарг
-  Click Element     xpath=//button[contains(.,'Опублікувати вимогу')]
-  Run Keyword And Return  Get text  xpath=//complaint[contains(.,'${claim.data.description}')]//div[@id='complaintid']
+  Run Keyword And Return  Get text  xpath=//complaint[contains(.,"${claim.data.description}")]//div[@id='complaintid']
 
+Створити чернетку вимоги про виправлення умов лоту
+  [Arguments]  ${username}  ${tender_uaid}   ${claim}  ${target}
+  Run Keyword And Return  Створити чернетку вимоги  ${username}  ${tender_uaid}   ${claim}  ${target}
+
+Створити чернетку вимоги про виправлення умов закупівлі
+  [Arguments]  ${username}  ${tender_uaid}   ${claim}
+  Run Keyword And Return  Створити чернетку вимоги  ${username}  ${tender_uaid}   ${claim}  тендер
+
+Скасувати вимогу
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${cancellation_data}
+  etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
+  Sleep  5
+  Відкрити розділ вимог і скарг
+  Click Element  xpath=//div[@id='${complaintID}']//*[@name='CancelComplaint']
+  Sleep  1
+  Input Text     id=cancellationReason      ${cancellation_data.data.cancellationReason}
+  Click Element  id=btnCancelComplaint
+  Sleep  5
+
+Скасувати вимогу про виправлення умов закупівлі
+  [Arguments]  @{arguments}
+  Скасувати вимогу  @{arguments}
+
+Скасувати вимогу про виправлення умов лоту
+  [Arguments]  @{arguments}
+  Скасувати вимогу  @{arguments}
+
+
+Select From List By Partial Label
+  [Arguments]  ${locator}  ${label}
+  [Documentation]  If more than one option is given for a single-selection list, the first value will be selected.
+  ${targets_list}=  Get List Items      ${locator}
+  ${label}=        Get Matches         ${targets_list}     regexp=.*${label}.*
+  Select From List By Label     ${locator}     ${label[0]}
 
 Отримати інформацію із документа до скарги
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${doc_id}  ${field}
@@ -894,10 +944,14 @@ Enter enquiry date
 Отримати інформацію із скарги
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field}  ${award_index}
   Відкрити розділ вимог і скарг
-  ${is_expanded}=   Get Element Attribute  xpath=//div[@id='${complaintID}']/div@aria-selected
-  Log  ${is_expanded}
-  Run Keyword If  '${is_expanded}'=='false'  Click Element  xpath=//div[@id='${complaintID}']//a
+  ${status}=  Run Keyword And Return Status  Розкрити інформацію про скаргу  ${complaintID}
+  Run Keyword If  '${status}'=='FAIL'  Run Keywords  Reload Page  Відкрити розділ вимог і скарг  Розкрити інформацію про скаргу
   Run Keyword And Return  Отримати інформацію із скарги про ${field}  ${complaintID}
+
+Розкрити інформацію про скаргу
+  [Arguments]  ${complaintID}
+  ${is_expanded}=  Get Element Attribute  xpath=//div[@id='${complaintID}']/div@aria-selected
+  Run Keyword If  '${is_expanded}'=='false'  Click Element  xpath=//div[@id='${complaintID}']//a
 
 Отримати інформацію із скарги про title
   [Arguments]  ${complaintID}
@@ -933,6 +987,23 @@ Enter enquiry date
 Отримати інформацію із скарги про cancellationReason
   [Arguments]  ${complaintID}
   Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='cancellationReason']
+
+Підтвердити вирішення вимоги про виправлення умов закупівлі
+  [Arguments]  @{arguments}
+  Підтвердити вирішення вимоги про виправлення умов  @{arguments}
+
+Підтвердити вирішення вимоги про виправлення умов лоту
+  [Arguments]  @{arguments}
+  Підтвердити вирішення вимоги про виправлення умов  @{arguments}
+
+Підтвердити вирішення вимоги про виправлення умов
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${data}
+  Reload Page
+  Відкрити розділ вимог і скарг
+  ${satisfied}=  Get From Dictionary  ${data}  data
+  ${satisfied}=  Get From Dictionary  ${satisfied}  satisfied
+  ${satisfied}=  Convert To String    ${satisfied}
+  Click Element  xpath=//div[@id='${complaintID}']//button[contains(@click-and-disable,'${satisfied.lower()}')]
 
 Відповісти на запитання
   [Arguments]  ${username}  ${tender_uaid}  ${answer_data}  ${question_id}
