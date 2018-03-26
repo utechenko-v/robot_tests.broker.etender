@@ -567,7 +567,7 @@ Enter enquiry date
   Select From List By Label  xpath=//div[@id="tree-01-02"]//select[@id="docType"]  Інші
   log  ${file}
   Sleep     5
-  Завантажити док  ${username}  ${file}  id=tend_doc_add
+  Завантажити док  ${username}  ${file}  //*[@id="tend_doc_add"]
   Sleep     5
 
 Додати предмети
@@ -777,7 +777,7 @@ Enter enquiry date
   sleep   2
   Select From List By Label  xpath=//div[@id="treetree-01-02-0"]//select[@id="docType"]  Інші
   Sleep   1
-  Завантажити док  ${username}  ${file}  id=lot_doc_add
+  Завантажити док  ${username}  ${file}  //*[@id="lot_doc_add"]
 
 Заповнити нецінові критерії
   [Arguments]  ${features_ids}  ${parameters}
