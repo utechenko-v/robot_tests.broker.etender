@@ -754,7 +754,7 @@ Enter enquiry date
   Run Keyword And Ignore Error  Обрати конфіденційність документа
   ${doc_type}=          get_doc_type_index          ${doc_type}
   Select From List By Index     id=bidDocType_      ${doc_type}
-  Завантажити док  ${username}  ${file}  id=addBidDoc_
+  Завантажити док  ${username}  ${file}  //*[@id="addBidDoc_"]  #xpath because of scrolling keyword
   Sleep  5
 
 Обрати конфіденційність документа
@@ -770,7 +770,7 @@ Enter enquiry date
   Sleep     1
   Click Element     id=changeDoc_0
   Sleep     3
-  Завантажити док  ${username}  ${file}  id=updateBidDoc_0
+  Завантажити док  ${username}  ${file}  //*[@id="updateBidDoc_0"]  #xpath because of scrolling keyword
 
 Завантажити документ в лот
   [Arguments]  ${username}  ${file}  ${tender_uaid}  ${lot_id}
