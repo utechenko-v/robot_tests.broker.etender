@@ -945,7 +945,7 @@ Select From List By Partial Label
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field}  ${award_index}
   Відкрити розділ вимог і скарг
   ${status}=  Run Keyword And Return Status  Розкрити інформацію про скаргу  ${complaintID}
-  Run Keyword If  '${status}'=='FAIL'  Run Keywords  Reload Page  Відкрити розділ вимог і скарг  Розкрити інформацію про скаргу
+  Run Keyword If  '${status}'=='FAIL'  Run Keywords  Reload Page  AND  Відкрити розділ вимог і скарг  AND  Розкрити інформацію про скаргу  ${complaintID}
   Run Keyword And Return  Отримати інформацію із скарги про ${field}  ${complaintID}
 
 Розкрити інформацію про скаргу
