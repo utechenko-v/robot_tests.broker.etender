@@ -703,9 +703,9 @@ Enter enquiry date
   Перейти на вкладку іншого типу процедур за потреби  ${username}
   Wait Until Element Is Visible    ${locator.search_tender}    10
   Input Text    ${locator.search_tender}    ${tender_uaid}
-  ${timeout_on_wait}=  Get Broker Property By Username  ${username}  timeout_on_wait
   ${tender_link}=   Set Variable    xpath=//td[contains(.,'${tender_uaid}')]//a
-  ${passed}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  ${timeout_on_wait} s  0 s  Клацнути і дочекатися  ${tender_link}
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  ${passed}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  30 s  0 s  Клацнути і дочекатися  ${tender_link}
   Run Keyword Unless  ${passed}  Fatal Error  Тендер не знайдено за ${timeout_on_wait} секунд
   Click Link    ${tender_link}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
