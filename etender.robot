@@ -1122,6 +1122,7 @@ Check Is Element Loaded
 
 Отримати інформацію про status
   Reload Page
+  Sleep  5
   ${return_value}=   Отримати текст із поля і показати на сторінці   status
   ${return_value}=   convert_etender_string_to_common_string  ${return_value.lower()}
   [Return]  ${return_value}
