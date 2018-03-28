@@ -1129,6 +1129,10 @@ Check Is Element Loaded
   ${new_value}=  float_to_string_2f  ${new_value}  # at least 2 fractional point precision, avoid rounding
   Input text  id=minimalStep_0  ${new_value}
 
+Редагувати поле лота description
+  [Arguments]  ${lot_id}  ${new_value}
+  Input text  id=lotDescription_0  ${new_value}
+
 Отримати документ до лоту
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${doc_id}
   Відкрити розділ опис закупівлі
