@@ -359,9 +359,9 @@ add feature lot
   Sleep    2
   ${number_of_options}=   Get Length              ${options}
   :FOR  ${i}  IN RANGE  ${number_of_options}
-  \     scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"lot")]//button[@ng-click="addFeatureOption(feature)"]  # addFeatureOption - lot
+  \     scrollIntoView by script using xpath  (//add-features[contains(@feature-sector,"lot")]//button[@ng-click="addFeatureOption(feature)"])[${feature_index}+1]  # addFeatureOption - lot
   \     sleep   2
-  \     Click element  xpath=//add-features[contains(@feature-sector,"lot")]//button[@ng-click="addFeatureOption(feature)"]
+  \     Click element  xpath=(//add-features[contains(@feature-sector,"lot")]//button[@ng-click="addFeatureOption(feature)"])[${feature_index}+1]
   \     Sleep    2
   \     ${opt_title}=  Get From Dictionary  ${feature.enum[${i}]}  title
   \     ${opt_value}=  Get From Dictionary  ${feature.enum[${i}]}  value
