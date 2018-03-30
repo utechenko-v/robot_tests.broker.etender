@@ -686,16 +686,33 @@ Enter enquiry date
   Sleep  2
   Click Element              xpath=//a[contains(@class,'btn btn-primary') and .='Редагувати закупівлю']
   Sleep  2
-  ${features_count}=  Selenium2Library.Get Element Count  xpath=//input[contains(@name,"feature-item") and @ng-model="feature.title"]
-  :FOR  ${i}  IN RANGE  ${features_count}
-  \     ${feature_title}=  Get Value  name=feature-item${i}
-  \     ${contains}=  Evaluate   "${feature_id}" in """${feature_title}"""
-  \     Run Keyword If  '${contains}' == 'True'  Видалити вказаний неціновий показник з предмету  ${i}  # delete feature
+  Пройти по цінових показниках лотів і видалити за потреби   ${feature_id}
+  Пройти по цінових показниках предметів і видалити за потреби  ${feature_id}
   Sleep  2
   Execute Javascript   window.scrollTo(0, document.body.scrollHeight)
   Click Element            id=SaveChanges
   Sleep  2
   Run Keyword And Ignore Error  Click Element  xpath=//div[@id="SignModal" and //div[contains(@class,"modal-dialog")]//div[contains(.,"будь ласка, перевірте статус")]]//button[.="Закрити"]  #close info dialog, if present
+
+Пройти по цінових показниках лотів і видалити за потреби
+  [Arguments]  ${feature_id}
+  ${features_count}=  Selenium2Library.Get Element Count  xpath=//input[contains(@name,"feature-lot") and @ng-model="feature.title"]
+  :FOR  ${i}  IN RANGE  ${features_count}
+  \     ${feature_title}=  Get Value  name=feature-lot${i}
+  \     ${contains}=  Evaluate   "${feature_id}" in """${feature_title}"""
+  \     ${target_feature_index}=  Run Keyword If  '${contains}' == 'True'  Set Variable  ${i}
+  Return From Keyword If  '${target_feature_index}' == 'None'
+  Видалити вказаний неціновий показник з лоту  ${target_feature_index}  # delete feature
+
+Пройти по цінових показниках предметів і видалити за потреби
+  [Arguments]  ${feature_id}
+  ${features_count}=  Selenium2Library.Get Element Count  xpath=//input[contains(@name,"feature-item") and @ng-model="feature.title"]
+  :FOR  ${i}  IN RANGE  ${features_count}
+  \     ${feature_title}=  Get Value  name=feature-item${i}
+  \     ${contains}=  Evaluate   "${feature_id}" in """${feature_title}"""
+  \     ${target_feature_index}=  Run Keyword If  '${contains}' == 'True'  Set Variable  ${i}
+  Return From Keyword If  '${target_feature_index}' == 'None'
+  Видалити вказаний неціновий показник з предмету  ${target_feature_index}  # delete feature
 
 Видалити вказаний неціновий показник з предмету
   [Arguments]  ${feature_index}
@@ -703,6 +720,13 @@ Enter enquiry date
   scrollIntoView by script using xpath  ${delete_button_xpath}
   sleep   2
   Click Element  xpath=${delete_button_xpath}  # delete feature button - item
+
+Видалити вказаний неціновий показник з лоту
+  [Arguments]  ${feature_index}
+  ${delete_button_xpath}=  Set Variable  (//add-features[contains(@feature-sector,"lot")]//button[@ng-click="removeFeature($index)"])[${feature_index}+1]
+  scrollIntoView by script using xpath  ${delete_button_xpath}
+  sleep   2
+  Click Element  xpath=${delete_button_xpath}  # delete feature button - lot
 
 Клацнути і дочекатися
   [Arguments]  ${tender_link}
@@ -722,7 +746,7 @@ Enter enquiry date
   ${tender_link}=   Set Variable    xpath=//td[contains(.,'${tender_uaid}')]//a
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   ${passed}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  30 s  0 s  Клацнути і дочекатися  ${tender_link}
-  Run Keyword Unless  ${passed}  Fatal Error  Тендер не знайдено за ${timeout_on_wait} секунд
+  Run Keyword Unless  ${passed}  Fatal Error  Тендер не знайдено за 30 секунд
   Click Link    ${tender_link}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   Wait Until Page Contains    ${tender_uaid}   10
