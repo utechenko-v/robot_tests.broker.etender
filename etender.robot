@@ -917,25 +917,32 @@ Enter enquiry date
   [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${file}
   Run Keyword And Return  Створити вимогу про виправлення умов  ${username}  ${tender_uaid}  ${claim}  тендер  ${file}
 
+Створити вимогу про виправлення визначення переможця
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${award_index}  ${file}
+  Run Keyword And Return  Створити вимогу про виправлення умов  ${username}  ${tender_uaid}  ${claim}  award  ${file}  ${award_index}
+
 Створити вимогу про виправлення умов
-  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${target}  ${file}
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${target}  ${file}  ${award_index}=0
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   sleep  5
-  ${complaintID}=  Створити чернетку вимоги  ${username}  ${tender_uaid}  ${claim}  ${target}
+  ${complaintID}=  Створити чернетку вимоги  ${username}  ${tender_uaid}  ${claim}  ${target}  ${award_index}
   Завантажити док  ${username}  ${file}  //*[@id="addClaimDoc"]  #xpath because of scrolling keyword
   Відкрити розділ вимог і скарг
   Click Element     xpath=//button[contains(.,'Опублікувати вимогу')]
   [Return]  ${complaintID}
 
 Створити чернетку вимоги
-  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${target}
+  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${target}  ${award_index}=-1
   Відкрити розділ вимог і скарг
   scrollIntoView by script using xpath  //*[@id="addClaim"]
   Click Element     id=addClaim
   sleep  5
   Input Text        id=title            ${claim.data.title}
   Input Text        id=description      ${claim.data.description}
-  Select From List By Partial Label     id=complaintFor  ${target}
+  ${award_index}=   Evaluate            ${award_index}+${1}
+  ${award_index}=   Convert To String   ${award_index}
+  Run Keyword If        '${target}'=='award'    Select From List By Index             id=complaintFor  ${award_index}
+  Run Keyword Unless    '${target}'=='award'    Select From List By Partial Label     id=complaintFor  ${target}
   Click Element     id=btnAddComplaint
   Sleep  10
   Wait Until Page Does Not Contain   ${locator_block_overlay}
@@ -948,6 +955,10 @@ Enter enquiry date
 Створити чернетку вимоги про виправлення умов закупівлі
   [Arguments]  ${username}  ${tender_uaid}   ${claim}
   Run Keyword And Return  Створити чернетку вимоги  ${username}  ${tender_uaid}   ${claim}  тендер
+
+Створити чернетку вимоги про виправлення визначення переможця
+  [Arguments]  ${username}  ${tender_uaid}   ${claim}  ${award_index}
+  Run Keyword And Return  Створити чернетку вимоги  ${username}  ${tender_uaid}   ${claim}  award  ${award_index}
 
 Скасувати вимогу
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${cancellation_data}
@@ -968,6 +979,10 @@ Enter enquiry date
   [Arguments]  @{arguments}
   Скасувати вимогу  @{arguments}
 
+Скасувати вимогу про виправлення визначення переможця
+  [Arguments]  @{arguments}
+  #last is award_index which is not needed
+  Скасувати вимогу  @{arguments[:-1]}
 
 Select From List By Partial Label
   [Arguments]  ${locator}  ${label}
@@ -1035,6 +1050,10 @@ Select From List By Partial Label
 Підтвердити вирішення вимоги про виправлення умов лоту
   [Arguments]  @{arguments}
   Підтвердити вирішення вимоги про виправлення умов  @{arguments}
+
+Підтвердити вирішення вимоги про виправлення визначення переможця
+  [Arguments]  @{arguments}
+  Підтвердити вирішення вимоги про виправлення умов  @{arguments[:-1]}
 
 Підтвердити вирішення вимоги про виправлення умов
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${data}
