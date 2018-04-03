@@ -148,7 +148,6 @@ def get_helper_dictionary():
         u"(включаючи ПДВ)": True,
         u"включаючи ПДВ": True,
         u"без ПДВ":       False,
-         u"Київ": u"місто Київ",
         # TODO: remove this temporary workaround, consult with quinta team about input data
         u"Дніпро": u"Дніпропетровськ",
         #tender statuses

@@ -592,7 +592,6 @@ Enter enquiry date
   ${latitude}=           Get From Dictionary  ${item.deliveryLocation}  latitude
   ${longitude}=          Get From Dictionary  ${item.deliveryLocation}  longitude
   ${region}=             Get From Dictionary  ${item.deliveryAddress}   region
-  ${region}=             convert_common_string_to_etender_string  ${region}
   ${locality}=           Get From Dictionary  ${item.deliveryAddress}   locality
   ${locality}=           convert_common_string_to_etender_string  ${locality}
   ${postalCode}=         Get From Dictionary  ${item.deliveryAddress}   postalCode
@@ -637,7 +636,7 @@ Enter enquiry date
   Select From List By Label  id=region_0${index}  ${region}
   Sleep  2
   #  TODO: sync this region/locality selection logic with keyword -- Створити постачальника, додати документацію і підтвердити його
-  Run Keyword If  '${region}' != 'Київ'  Input text  name=otherCity_0${index}  ${locality}
+  Run Keyword If  '${region}' != 'місто Київ'  Input text  name=otherCity_0${index}  ${locality}
   Input text    id=street_0${index}   ${streetAddress}
   Sleep  1
   Input text    id=postIndex_0${index}    ${postalCode}
