@@ -352,7 +352,8 @@ add feature lot
   ${title}=        Get From Dictionary  ${feature}  title
   ${description}=  Get From Dictionary  ${feature}  description
   ${options}=      Get From Dictionary  ${feature}  enum
-  scrollIntoView by script using xpath  //add-features[contains(@feature-sector,"lot")]//span[@ng-click="addFeature()"]  # scroll to addFeature button - lot
+  Wait Until Page Contains Element  xpath=//add-features[contains(@feature-sector,"lot")]//span[@ng-click="addFeature()"]  30  #        addFeature button - lot
+  scrollIntoView by script using xpath    //add-features[contains(@feature-sector,"lot")]//span[@ng-click="addFeature()"]  # scroll to addFeature button - lot
   sleep   2
   Click element  xpath=//add-features[contains(@feature-sector,"lot")]//span[@ng-click="addFeature()"]
   Sleep    2
@@ -1201,7 +1202,7 @@ Check Is Element Loaded
 
 Отримати текст із поля і показати на сторінці
   [Arguments]   ${fieldname}
-  Wait Until Element Is Visible    ${locator.${fieldname}}    1
+  Wait Until Element Is Visible    ${locator.${fieldname}}    30
   ${return_value}=   Get Text  ${locator.${fieldname}}
   [return]  ${return_value}
 
@@ -1850,6 +1851,7 @@ Check Is Element Loaded
   Click Element                      xpath=//li[@id="naviTitle0"]/span  # go to опис закупівлі tab
 
 Відкрити розділ пропозицій
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
   sleep   1
   scrollIntoView by script using xpath  //li[@id="naviTitle1"]/span  # scroll to bids tab
   sleep   1
