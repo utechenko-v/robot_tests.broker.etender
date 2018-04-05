@@ -556,10 +556,12 @@ Enter enquiry date
   Choose File     xpath=//input[@type="file"]  ${file}
   Sleep   4
   Capture Page Screenshot
+  ${status}=  Run Keyword And Return Status  Page Should Not Contain  Internal Server Error
   Close Browser
   etender.Підготувати клієнт для користувача  ${username}
   Go To  ${tmp_location}
   Sleep  5
+  Run Keyword If  '${status}'=='False'  Fail  There was a problem during document upload
 
 Завантажити документ
   [Arguments]  ${username}  ${file}  ${tender_uaid}
