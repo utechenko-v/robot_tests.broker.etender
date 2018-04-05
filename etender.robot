@@ -31,6 +31,8 @@ ${locator.enquiryPeriod.endDate}                               id=enquiryEnd
 ${locator.causeDescription}                                    id=causeDescription
 ${locator.cause}                                               id=cause
 ${locator.qualificationPeriod.endDate}                         id=qualificationPeriod_endDate
+${locator.qualifications[0].status}                            xpath=(//div[@ng-controller="qualificationsCtrl"]//div[@class = "row"]/div[contains(.,"Статус:")]/following-sibling::div)[1]
+${locator.qualifications[1].status}                            xpath=(//div[@ng-controller="qualificationsCtrl"]//div[@class = "row"]/div[contains(.,"Статус:")]/following-sibling::div)[2]
 ${locator.contracts[0].status}                                 xpath=//div[@class = 'row']/div[contains(.,'Статус договору:')]/following-sibling::div
 ${locator.items[0].description}                                id=item_description_00
 ${locator.items[0].deliveryDate.startDate}                     id=delivery_start_00
@@ -1209,6 +1211,24 @@ Check Is Element Loaded
   Reload Page
   ${datetime}=      Отримати текст із поля і показати на сторінці  qualificationPeriod.endDate
   Run Keyword And Return  convert_etender_date_to_iso_format  ${datetime}
+
+Отримати інформацію про qualifications[0].status
+  Reload Page
+  Sleep  10
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ пропозицій
+  ${return_value}=  Отримати текст із поля і показати на сторінці  qualifications[0].status
+  ${return_value}=  convert_etender_string_to_common_string  ${return_value}
+  [return]  ${return_value}
+
+Отримати інформацію про qualifications[1].status
+  Reload Page
+  Sleep  10
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ пропозицій
+  ${return_value}=  Отримати текст із поля і показати на сторінці  qualifications[1].status
+  ${return_value}=  convert_etender_string_to_common_string  ${return_value}
+  [return]  ${return_value}
 
 Отримати інформацію про description
   ${return_value}=   Отримати текст із поля і показати на сторінці   description

@@ -178,7 +178,8 @@ def get_helper_dictionary():
         u'відхилено': u'declined',
         u'скасована скаржником': u'cancelled',
         u'не задоволено': u'invalid',
-        u'залишена без відповіді': u'ignored'
+        u'залишена без відповіді': u'ignored',
+        u'очікується кваліфікація': u'pending'
     }
 
 def get_feature_index(i):
