@@ -2208,3 +2208,111 @@ temporary keyword for title update
   Sleep  5
   Click Element  xpath=//button[@click-and-block="setDecision(1)"]      # button - Підтвердити
   Sleep  5
+
+Відкрити подробиці кваліфікації за індексом
+  [Arguments]  ${qualification_num}
+  Capture Page Screenshot
+  Wait Until Element Is Visible  xpath=//div[@id="accordion-0-${qualification_num}"]//button[contains(.,"Підтвердити кваліфікацію") and @data-toggle="collapse"]   # inner confirmation button
+  ${is_expanded}=  Run Keyword And Return Status  Element Should Be Visible  xpath=//div[@id="aply-0-${qualification_num}"]//button[@click-and-block="vm.q.active(qualification)"]
+  Return From Keyword If  '${is_expanded}' != 'False'
+  scrollIntoView by script using xpath  //div[@id="accordion-0-${qualification_num}"]//button[contains(.,"Підтвердити кваліфікацію") and @data-toggle="collapse"]
+  Click Element                   xpath=//div[@id="accordion-0-${qualification_num}"]//button[contains(.,"Підтвердити кваліфікацію") and @data-toggle="collapse"]
+  Sleep  1
+  Capture Page Screenshot
+
+Wait for doc upload in qualification
+  [Arguments]  ${qualification_num}
+  Reload Page
+  Sleep  10
+  scrollIntoView by script using xpath  (//div[contains(@class,"row")]//div[contains(@ng-if,"qualification.documents.length") and contains(.,"Показати документи")])[1+${qualification_num}]  # button - Показати документи, Протокол розгляду
+  sleep   2
+  Click Element  xpath=(//div[contains(@class,"row")]//div[contains(@ng-if,"qualification.documents.length") and contains(.,"Показати документи")])[1+${qualification_num}]                   # button - Показати документи, Протокол розгляду
+  Sleep  5
+  Page Should Not Contain  Очікує публікації в ЦБД
+
+Завантажити документ у кваліфікацію
+  [Arguments]  ${username}  ${document}  ${tender_uaid}  ${qualification_num}
+  etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ пропозицій
+  Capture Page Screenshot
+  Відкрити подробиці кваліфікації за індексом  ${qualification_num}
+  Sleep  1
+  Capture Page Screenshot
+
+  # TODO: Rework this tricky behavior someday?
+  # Autotest cannot upload file directly, because there is no INPUT element on page. Need to click on button first,
+  # but this will open OS file selection dialog. So we close and reopen browser to get rid of this dialog
+  ${tmp_location}=  Get Location
+  Click Element  xpath=//div[@id="aply-0-${qualification_num}"]//button[@ng-model="qualification.addDocuments"]
+  Choose File  xpath=//input[@type="file" and @ng-model="qualification.addDocuments"]  ${document}
+  Sleep   4
+  Capture Page Screenshot
+  Close Browser
+  etender.Підготувати клієнт для користувача  ${username}
+  Go To  ${tmp_location}
+  Sleep  5
+  Відкрити розділ пропозицій
+  Wait Until Keyword Succeeds   10 min  20 x  Wait for doc upload in qualification  ${qualification_num}  # there: open qualification doc section and check are all docs are loaded
+  Capture Page Screenshot
+  Reload Page
+
+Підтвердити кваліфікацію
+  [Arguments]  ${username}  ${tender_uaid}  ${qualification_num_p}
+  # TODO: fix this workaround and get real "last" qualification
+  ${qualification_num}=  Run Keyword If  '${qualification_num_p}' == '-1'  Set Variable  1
+  ...              ELSE  Set Variable  ${qualification_num_p}
+  etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Wait Until Page Does Not Contain   ${locator_block_overlay}
+  Відкрити розділ пропозицій
+  Відкрити подробиці кваліфікації за індексом  ${qualification_num}
+  Sleep  1
+
+  # TODO: Rework this tricky behavior someday?
+  # Autotest cannot upload file directly, because there is no INPUT element on page. Need to click on button first,
+  # but this will open OS file selection dialog. So we close and reopen browser to get rid of this dialog
+  ${tmp_location}=  Get Location
+  Wait Until Element Is Visible  xpath=//div[@id="aply-0-${qualification_num}"]//button[@ng-click="showSignModalQualification(qualification)"]
+  Click Element                  xpath=//div[@id="aply-0-${qualification_num}"]//button[@ng-click="showSignModalQualification(qualification)"]
+  Sleep  5
+  # now - sign! again ---------------------------------------------------------
+  Select From List By Label  id=CAsServersSelect  Тестовий ЦСК АТ "ІІТ"
+  ${key_dir}=  Normalize Path  ${CURDIR}/../../
+  Choose File  id=PKeyFileInput  ${key_dir}/Key-6.dat
+  Sleep  5
+  ${PKeyPassword}=  Get File  password.txt
+  Input text  id=PKeyPassword  ${PKeyPassword}
+  Click Element  id=PKeyReadButton
+  Sleep  10
+  Click Element  id=SignDataButton
+  Sleep  5
+  Capture Page Screenshot
+  Click Element  xpath=//div[@id="modalSign"]//button[contains(@class,"close")]
+  Sleep  1
+  Capture Page Screenshot
+  Sleep  30
+# shall be signed here -------------------------------------------------------------
+  Capture Page Screenshot
+  Sleep  30
+  Capture Page Screenshot
+  Reload Page
+  Відкрити подробиці кваліфікації за індексом  ${qualification_num}
+  Sleep  5
+  scrollIntoView by script using xpath  //div[@id="aply-0-${qualification_num}"]//input[@ng-model="qualification.eligible"]
+  Click Element  xpath=//div[@id="aply-0-${qualification_num}"]//input[@ng-model="qualification.eligible"]
+  Click Element  xpath=//div[@id="aply-0-${qualification_num}"]//input[@ng-model="qualification.qualified"]
+  Capture Page Screenshot
+  scrollIntoView by script using xpath  //div[@id="aply-0-${qualification_num}"]//button[@click-and-block="vm.q.active(qualification)"]
+  Click Element  xpath=//div[@id="aply-0-${qualification_num}"]//button[@click-and-block="vm.q.active(qualification)"]
+  Wait Until Page Contains  Пропозицію кваліфіковано!  60
+
+Затвердити остаточне рішення кваліфікації
+  [Arguments]  ${username}  ${tender_uaid}
+  Capture Page Screenshot
+  Reload Page
+  Wait Until Element Is Visible   xpath=//button[@click-and-block="vm.q.standStill()"]
+  Sleep  10
+  scrollIntoView by script using xpath  //button[@click-and-block="vm.q.standStill()"]
+  Sleep  5
+  Capture Page Screenshot
+  Click Element                   xpath=//button[@click-and-block="vm.q.standStill()"]
