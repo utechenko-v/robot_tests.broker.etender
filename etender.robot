@@ -805,6 +805,22 @@ Enter enquiry date
   [Arguments]  ${conf}=1
   Select From List By Index     id=bidDocConf_   ${conf}
 
+Змінити документацію в ставці
+  [Arguments]  ${username}  ${tender_uaid}  ${privat_doc}  ${doc_id}
+  Log  ${privat_doc}
+  Sleep     3
+  Відкрити розділ пропозицій
+  Click Element     xpath=//label[@for="showBidDocs00"]
+  Sleep     1
+  Click Element     id=changeDoc_0
+  Sleep     3
+  Select From List By Index  id=bidDocConf_    3
+  Sleep     1
+  Input Text        xpath=//textarea[@ng-model="document.confidentialityRationale"]  ${privat_doc.data.confidentialityRationale}
+  Click Element     xpath=//button[@ng-click="updateBidDocument(document, tender, bid)"]
+  Sleep     3
+  Reload Page
+
 Змінити документ в ставці
   [Arguments]  ${username}  ${tender_uaid}  ${file}  ${doc_id}
   Log  ${doc_id}
