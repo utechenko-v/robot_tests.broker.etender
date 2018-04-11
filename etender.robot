@@ -1038,6 +1038,7 @@ Select From List By Partial Label
 
 Отримати інформацію із скарги про resolutionType
   [Arguments]  ${complaintID}
+  Wait Until Keyword Succeeds  10 x  5  Check Is Element Loaded  xpath=//div[@id='${complaintID}']//*[@name='resolutionType']
   ${resolutionType}=      Get Text  xpath=//div[@id='${complaintID}']//*[@name='resolutionType']
   Run Keyword And Return  convert_etender_string_to_common_string  ${resolutionType.lower()}
 
@@ -1061,6 +1062,7 @@ Select From List By Partial Label
 
 Отримати інформацію із скарги про cancellationReason
   [Arguments]  ${complaintID}
+  Wait Until Keyword Succeeds  10 x  5  Check Is Element Loaded  xpath=//div[@id='${complaintID}']//*[@name='cancellationReason']
   Run Keyword And Return  Get Text  xpath=//div[@id='${complaintID}']//*[@name='cancellationReason']
 
 Підтвердити вирішення вимоги про виправлення умов закупівлі
