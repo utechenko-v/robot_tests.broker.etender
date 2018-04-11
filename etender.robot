@@ -1048,8 +1048,9 @@ Select From List By Partial Label
 
 Отримати інформацію із скарги про satisfied
   [Arguments]  ${complaintID}
+  Wait Until Keyword Succeeds  10 x  5  Check Is Element Loaded  xpath=//div[@id='${complaintID}']//*[@name='satisfied']
   ${satisfied}=  Get Text  xpath=//div[@id='${complaintID}']//*[@name='satisfied']
-  ${satisfied}=  Set Variable  ${satisfied.replace(u'Так',u'True' )}
+  ${satisfied}=  Set Variable  ${satisfied.replace(u'Так', u'True')}
   ${satisfied}=  Set Variable  ${satisfied.replace(u'Ні', u'False')}
   Run Keyword And Return  Convert To Boolean  ${satisfied}
 
