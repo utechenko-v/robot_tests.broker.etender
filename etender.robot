@@ -793,7 +793,7 @@ Enter enquiry date
 Завантажити документ в ставку
   [Arguments]  ${username}  ${file}  ${tender_uaid}  ${doc_type}=1
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Натиснути редагувати пропозицію
   Run Keyword And Ignore Error  Обрати конфіденційність документа
   ${doc_type}=          get_doc_type_index          ${doc_type}
@@ -809,7 +809,7 @@ Enter enquiry date
   [Arguments]  ${username}  ${tender_uaid}  ${privat_doc}  ${doc_id}
   Log  ${privat_doc}
   Sleep     3
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Click Element     xpath=//label[@for="showBidDocs00"]
   Sleep     1
   Click Element     id=changeDoc_0
@@ -825,7 +825,7 @@ Enter enquiry date
   [Arguments]  ${username}  ${tender_uaid}  ${file}  ${doc_id}
   Log  ${doc_id}
   Sleep     3
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Click Element     xpath=//label[@for="showBidDocs00"]
   Sleep     1
   Click Element     id=changeDoc_0
@@ -859,7 +859,7 @@ Enter enquiry date
   [Arguments]  ${username}  ${tender_uaid}  ${bid_data}  ${lots_ids}  ${features_ids}
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${amount}=    Run Keyword If  ${lots_ids} is None  Set Variable  ${bid_data.data.value.amount}
   ...           ELSE  Set Variable  ${bid_data.data.lotValues[0].value.amount}
   Input String      id=amount0      ${amount}
@@ -873,7 +873,7 @@ Enter enquiry date
   [Arguments]  ${username}  ${tender_uaid}  ${field}
   etender.Пошук тендера по ідентифікатору   ${username}   ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Run Keyword And Return If  'value' in '${field}'  Отримати інформацію про value пропозиції
   Run Keyword And Return  Отримати інформацію про ${field} пропозиції
 
@@ -1107,9 +1107,9 @@ Select From List By Partial Label
   sleep  5
 
 Відкрити розділ запитань
-  scrollIntoView by script using xpath  //li[@id="naviTitle2"]/span  # scroll to questions tab
+  scrollIntoView by script using xpath  //li[@id="naviTitle1"]/span  # scroll to questions tab
   sleep   1
-  Click Element                      xpath=//li[@id="naviTitle2"]/span  # go to questions tab
+  Click Element                      xpath=//li[@id="naviTitle1"]/span  # go to questions tab
   Wait Until Page Does Not Contain   ${locator_block_overlay}
 
 scrollIntoView by script using xpath
@@ -1201,7 +1201,7 @@ Check Is Element Loaded
 
 Отримати документ до лоту
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${doc_id}
-  Відкрити розділ опис закупівлі
+  Відкрити розділ Деталі Закупівлі
   Click Element     id=openAllLots
   Sleep  2
   Run Keyword And Return  etender.Отримати документ  ${username}  ${tender_uaid}  ${doc_id}
@@ -1238,7 +1238,7 @@ Check Is Element Loaded
   Reload Page
   Sleep  10
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${return_value}=  Отримати текст із поля і показати на сторінці  qualifications[0].status
   ${return_value}=  convert_etender_string_to_common_string  ${return_value}
   [return]  ${return_value}
@@ -1247,7 +1247,7 @@ Check Is Element Loaded
   Reload Page
   Sleep  10
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${return_value}=  Отримати текст із поля і показати на сторінці  qualifications[1].status
   ${return_value}=  convert_etender_string_to_common_string  ${return_value}
   [return]  ${return_value}
@@ -1305,7 +1305,7 @@ Check Is Element Loaded
   Reload Page
   Sleep  10
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${return_value}=  Отримати текст із поля і показати на сторінці  contracts[0].status
   ${return_value}=  Set Variable  ${return_value.strip()}
   ${return_value}=  convert_etender_string_to_common_string  ${return_value}
@@ -1334,7 +1334,6 @@ Check Is Element Loaded
 
 Отримати інформацію про procuringEntity.address.countryName
   Sleep  10
-  Відкрити розділ контактні дані
   ${return_value}=  Отримати текст із поля і показати на сторінці   procuringEntity.address.countryName
   ${return_value}=  Set Variable   ${return_value[:-1]}
   [return]  ${return_value}
@@ -1411,7 +1410,7 @@ Check Is Element Loaded
 
 Отримати інформацію про items[0].description
   Sleep   10
-  Відкрити розділ опис закупівлі
+  Відкрити розділ Деталі Закупівлі
   ${return_value}=   Отримати текст із поля і показати на сторінці   items[0].description
   [return]  ${return_value}
 
@@ -1515,7 +1514,7 @@ Check Is Element Loaded
 
 Отримати інформацію про awards[0].complaintPeriod.endDate
   Sleep   10
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].complaintPeriod.endDate
   ${return_value}=  Set Variable  ${return_value.replace(u'по ','')}
   ${return_value}=  convert_etender_date_to_iso_format_and_add_timezone   ${return_value}
@@ -1523,7 +1522,7 @@ Check Is Element Loaded
 
 Отримати інформацію про awards[0].status
   Sleep   10
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].status
   ${return_value}=  Set Variable  ${return_value.strip()}
   ${return_value}=   convert_etender_string_to_common_string   ${return_value}
@@ -1531,7 +1530,7 @@ Check Is Element Loaded
 
 Отримати інформацію про awards[0].suppliers[0].address.countryName
   Sleep   10
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Mouse Over  xpath=//span[@id="awardContactPoint"]
   Sleep  1
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].address.countryName
@@ -1586,7 +1585,7 @@ Check Is Element Loaded
 
 Отримати інформацію про awards[0].suppliers[0].contactPoint.telephone
   Sleep   10
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Mouse Over  xpath=//span[@id="awardContactPoint"]
   Sleep  1
   ${return_value}=  Отримати текст із поля і показати на сторінці     awards[0].suppliers[0].contactPoint.telephone
@@ -1630,14 +1629,14 @@ Check Is Element Loaded
 
 Отримати інформацію про documents[0].title
   Sleep  10
-  Відкрити розділ опис закупівлі
+  Відкрити розділ Деталі Закупівлі
   # TODO move locator
   ${return_value}=  Get Text  xpath=//td[contains(@class,"doc-name")]//a
   [return]  ${return_value}
 
 Отримати інформацію про awards[0].documents[0].title
   Sleep  10
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Click Element  xpath=//label[@for="showAwards00"]  #
   Sleep  1
   # TODO move locator
@@ -1656,7 +1655,7 @@ Check Is Element Loaded
 Отримати посилання на аукціон для учасника
   [Arguments]  @{ARGUMENTS}
   etender.Пошук тендера по ідентифікатору   ${ARGUMENTS[0]}   ${ARGUMENTS[1]}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Page Should Contain Element  xpath=//a[@id='participationUrl_0']
   Sleep  3
   ${url}=  Get Element Attribute  xpath=//*[@id="participationUrl_0"]@href
@@ -1670,7 +1669,7 @@ Check Is Element Loaded
   ${prepared_locator}=  Set Variable  ${prepared_locator.replace('XX_item_id_XX','${item_id}')}
   log  ${prepared_locator}
   sleep   10
-  Відкрити розділ опис закупівлі
+  Відкрити розділ Деталі Закупівлі
   Wait Until Page Contains Element  ${prepared_locator}  10
   Wait Until Keyword Succeeds  10 x  5  Check Is Element Loaded  ${prepared_locator}
   ${raw_value}=   Get Text  ${prepared_locator}
@@ -1864,29 +1863,18 @@ Check Is Element Loaded
   [Arguments]  ${object_id}
   Run Keyword And Return  Get Element Attribute  xpath=//span[contains(.,'${object_id}')]@name
 
-Відкрити розділ опис закупівлі
-  scrollIntoView by script using xpath  //li[@id="naviTitle0"]/span  # scroll to опис закупівлі tab
-  sleep   1
-  Click Element                      xpath=//li[@id="naviTitle0"]/span  # go to опис закупівлі tab
-
-Відкрити розділ пропозицій
+Відкрити розділ Деталі Закупівлі
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  sleep   1
-  scrollIntoView by script using xpath  //li[@id="naviTitle1"]/span  # scroll to bids tab
-  sleep   1
-  Click Element                      xpath=//li[@id="naviTitle1"]/span  # go to bids tab
+  scrollIntoView by script using xpath  //li[@id="naviTitle0"]/span  # scroll to Деталі Закупівлі tab
+  Click Element                      xpath=//li[@id="naviTitle0"]/span  # go to Деталі Закупівлі tab
   Wait Until Page Does Not Contain   ${locator_block_overlay}
 
 Відкрити розділ вимог і скарг
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  scrollIntoView by script using xpath  //li[@id="naviTitle3"]/span  # scroll to complaints
-  Click Element                      xpath=//li[@id="naviTitle3"]/span  # go to complaints
+  scrollIntoView by script using xpath  //li[@id="naviTitle2"]/span  # scroll to complaints
+  Click Element                      xpath=//li[@id="naviTitle2"]/span  # go to complaints
   Wait Until Page Does Not Contain   ${locator_block_overlay}
 
-Відкрити розділ контактні дані
-  scrollIntoView by script using xpath  //li[@id="naviTitle4"]/span  # scroll to контактні дані
-  sleep   1
-  Click Element                      xpath=//li[@id="naviTitle4"]/span  # go to контактні дані
 
 Створити постачальника, додати документацію і підтвердити його
   [Arguments]  ${username}  ${tender_uaid}  ${object}  ${document}
@@ -1911,7 +1899,7 @@ Check Is Element Loaded
 
   Reload Page
   Sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${amount}=             Get From Dictionary  ${object.data.value}  amount
   ${supplier_name}=      Get From Dictionary  ${object.data.suppliers[0]}               name
   ${supplier_code}=      Get From Dictionary  ${object.data.suppliers[0].identifier}    id
@@ -1954,7 +1942,7 @@ Check Is Element Loaded
   Sleep  30
   Reload Page
   Sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Click Element  xpath=//a[@data-target="#modalGetAwards"]  # button - Оцінка документів Кандидата
   Select From List By Label  id=docType  Повідомлення про рішення
   Sleep   5
@@ -1973,7 +1961,7 @@ Check Is Element Loaded
   etender.Підготувати клієнт для користувача  ${username}
   Go To  ${tmp_location}
   Sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Capture Page Screenshot
   Wait Until Keyword Succeeds   10 min  20 x  Wait for upload  # there: button - Оцінка документів Кандидата
 
@@ -2031,7 +2019,7 @@ Wait for upload before signing
   Sleep  60
   Reload Page
   Sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   ${tmp_location_tender}=  Get Location
 
 # ==================  1 - enter values into fields, save
@@ -2056,7 +2044,7 @@ Wait for upload before signing
   Go To  ${tmp_location_tender}
   Sleep  5
   Capture Page Screenshot
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   scrollIntoView by script using xpath  //a[.="Редагувати інформацію про договір "]
   sleep   2
   Click Element  xpath=//a[.="Редагувати інформацію про договір "]
@@ -2082,7 +2070,7 @@ Wait for upload before signing
   Go To  ${tmp_location_tender}
   Sleep  5
   Capture Page Screenshot
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   scrollIntoView by script using xpath  //a[.="Редагувати інформацію про договір "]
   sleep   2
   Click Element  xpath=//a[.="Редагувати інформацію про договір "]
@@ -2197,7 +2185,7 @@ temporary keyword for title update
   # TODO: rework duplicated code - see "Створити постачальника, додати документацію і підтвердити його"
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Click Element  xpath=//a[@data-target="#modalGetAwards"]  # button - Оцінка документів Кандидата
   Select From List By Label  id=docType  Повідомлення про рішення
   Sleep   5
@@ -2214,7 +2202,7 @@ temporary keyword for title update
   etender.Підготувати клієнт для користувача  ${username}
   Go To  ${tmp_location}
   Sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Wait Until Keyword Succeeds   10 min  20 x  Wait for upload  # there: button - Оцінка документів Кандидата
   Reload Page
 
@@ -2224,7 +2212,7 @@ temporary keyword for title update
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
   Sleep   4
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Click Element  xpath=//a[@data-target="#modalGetAwards"]  # button - Оцінка документів Кандидата
   Sleep   1
   Click Element  xpath=//button[@ng-click="getAwardsNextStep()"]        # button - Наступний крок
@@ -2257,7 +2245,7 @@ Wait for doc upload in qualification
   [Arguments]  ${username}  ${document}  ${tender_uaid}  ${qualification_num}
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Capture Page Screenshot
   Відкрити подробиці кваліфікації за індексом  ${qualification_num}
   Sleep  1
@@ -2275,7 +2263,7 @@ Wait for doc upload in qualification
   etender.Підготувати клієнт для користувача  ${username}
   Go To  ${tmp_location}
   Sleep  5
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Wait Until Keyword Succeeds   10 min  20 x  Wait for doc upload in qualification  ${qualification_num}  # there: open qualification doc section and check are all docs are loaded
   Capture Page Screenshot
   Reload Page
@@ -2287,7 +2275,7 @@ Wait for doc upload in qualification
   ...              ELSE  Set Variable  ${qualification_num_p}
   etender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Wait Until Page Does Not Contain   ${locator_block_overlay}
-  Відкрити розділ пропозицій
+  Відкрити розділ Деталі Закупівлі
   Відкрити подробиці кваліфікації за індексом  ${qualification_num}
   Sleep  1
 
