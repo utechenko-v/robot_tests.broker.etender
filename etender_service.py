@@ -174,7 +174,7 @@ def get_helper_dictionary():
         u"Переможець торгів": u"active",
         u'вимога': u'claim',
         u'відповідь надана': u'answered',
-        u'вирішена': u'resolved',
+        u'задоволено': u'resolved',
         u'відхилено': u'declined',
         u'скасована скаржником': u'cancelled',
         u'не задоволено': u'invalid',
