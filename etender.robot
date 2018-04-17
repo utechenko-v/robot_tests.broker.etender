@@ -17,12 +17,12 @@ ${locator.procuringEntity.address.locality}                    id=customer_city
 ${locator.procuringEntity.address.postalCode}                  id=customer_postIndex
 ${locator.procuringEntity.address.region}                      id=customer_region
 ${locator.procuringEntity.address.streetAddress}               id=customer_addressStr
-${locator.procuringEntity.contactPoint.name}                   xpath=//span[contains(@ng-bind,"customer.organization.contactPoint.name") and not(contains(@ng-bind,"nameEN"))]
-${locator.procuringEntity.contactPoint.telephone}              xpath=//span[contains(@ng-bind,"customer.organization.contactPoint.telephone")]
-${locator.procuringEntity.contactPoint.url}                    xpath=//div[@class = 'row']/div/span[text() = 'Сайт:']/parent::div/following-sibling::div/a
-${locator.procuringEntity.identifier.legalName}                xpath=//span[contains(@ng-bind,"customer.organization.name")]
-${locator.procuringEntity.identifier.scheme}                   xpath=//div[@class = 'row']/div/span[text() = 'Найменування:']/parent::div/parent::div/following-sibling::div/div/span[starts-with(.,'Код')]
-${locator.procuringEntity.identifier.id}                       xpath=//span[contains(@ng-bind,"customer.organization.identifier.apiId")]
+${locator.procuringEntity.contactPoint.name}                   id=contactPoint_name
+${locator.procuringEntity.contactPoint.telephone}              id=contactPoint_telephone
+${locator.procuringEntity.contactPoint.url}                    id=contactPoint_url
+${locator.procuringEntity.identifier.legalName}                id=tenderOwner
+${locator.procuringEntity.identifier.scheme}                   id=organization_scheme
+${locator.procuringEntity.identifier.id}                       id=organization_identifier
 ${locator.value.amount}                                        id=tenderBudget
 ${locator.tenderPeriod.startDate}                              id=tenderStart
 ${locator.tenderPeriod.endDate}                                id=tenderEnd
@@ -81,10 +81,10 @@ ${locator_lot_title}                                           xpath=//div[@id="
 ${locator_lot_description}                                     xpath=//div[@id="treeLot0"]//*[@id="lotDescription_0"]
 ${locator_lot_value.currency}                                  id=lotCurrency_0
 ${locator_lot_value.amount}                                    id=lotValue_0
-${locator_lot_value.valueAddedTaxIncluded}                     xpath=//tender-subject-info//*[@id="lotVatInc_0"]
+${locator_lot_value.valueAddedTaxIncluded}                     xpath=//tender-detailes-about//*[@id="lotVatInc_0"]
 ${locator_lot_minimalStep.amount}                              xpath=//div[@id="treeLot0"]//*[@id="lotMinimalStep_0"]
 ${locator_lot_minimalStep.currency}                            xpath=//div[@id="treeLot0"]//*[@id="lotMinimalStep_0"]
-${locator_lot_minimalStep.valueAddedTaxIncluded}               xpath=//tender-subject-info//*[@id="lotVatInc_0"]
+${locator_lot_minimalStep.valueAddedTaxIncluded}               xpath=//tender-detailes-about//*[@id="lotVatInc_0"]
 ${locator.value.currency}                                      id=tenderCurrency
 ${locator.value.valueAddedTaxIncluded}                         id=includeVat
 ${locator.bids}                                                id=ParticipiantInfo_0
@@ -97,6 +97,7 @@ ${locator_item_description}                                    xpath=//p[contain
 ${locator_item_classification.scheme}                          xpath=//table[contains(@class,"itemTable")]//th[contains(.,"Класифікатор ")]
 ${locator_item_classification.id}                              xpath=//p[contains(.,"XX_item_id_XX")]/../../parent::tr//*[starts-with(@id,"classification_code_")]
 ${locator_item_classification.description}                     xpath=//p[contains(.,"XX_item_id_XX")]/../../parent::tr//*[starts-with(@id,"classification_name_")]
+${locator_item_additionalClassifications[0].scheme}            xpath=//p[contains(.,"XX_item_id_XX")]/../../parent::tr//b[contains(.,"Класифікатор ")]
 ${locator_item_additionalClassifications[0].id}                xpath=//p[contains(.,"XX_item_id_XX")]/../../parent::tr//*[starts-with(@id,"additionalClassification_id")]
 ${locator_item_additionalClassifications[0].description}       xpath=//p[contains(.,"XX_item_id_XX")]/../../parent::tr//*[starts-with(@id,"additionalClassification_desc")]
 ${locator_item_quantity}                                       xpath=//p[contains(.,"XX_item_id_XX")]/../../parent::tr//*[starts-with(@id,"item_quantity_")]

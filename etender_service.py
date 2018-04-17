@@ -175,9 +175,9 @@ def get_helper_dictionary():
         u'вимога': u'claim',
         u'відповідь надана': u'answered',
         u'задоволено': u'resolved',
-        u'відхилено': u'declined',
+        u'не задоволено': u'declined',
         u'скасована скаржником': u'cancelled',
-        u'не задоволено': u'invalid',
+        u'відхилено': u'invalid',
         u'залишена без відповіді': u'ignored',
         u'очікується кваліфікація': u'pending'
     }
