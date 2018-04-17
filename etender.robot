@@ -2321,9 +2321,9 @@ Wait for doc upload in qualification
   [Arguments]  ${username}  ${tender_uaid}
   Capture Page Screenshot
   Reload Page
-  Wait Until Element Is Visible   xpath=//button[@click-and-block="vm.q.standStill()"]
+  Wait Until Element Is Visible   xpath=//button[@click-and-block="standStill()"]   # button - Підтвердити рішення
   Sleep  10
-  scrollIntoView by script using xpath  //button[@click-and-block="vm.q.standStill()"]
+  scrollIntoView by script using xpath  //button[@click-and-block="standStill()"]
   Sleep  5
   Capture Page Screenshot
-  Click Element                   xpath=//button[@click-and-block="vm.q.standStill()"]
+  Click Element                   xpath=//button[@click-and-block="standStill()"]
