@@ -145,8 +145,8 @@ def get_helper_dictionary():
     return {
         u"кг.": u"кілограм",
         u"грн.": u"UAH",
-        u"(включаючи ПДВ)": True,
-        u"включаючи ПДВ": True,
+        u"(з ПДВ)": True,
+        u"з ПДВ": True,
         u"без ПДВ":       False,
         # TODO: remove this temporary workaround, consult with quinta team about input data
         u"Дніпро": u"Дніпропетровськ",
