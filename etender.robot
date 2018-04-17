@@ -1918,11 +1918,11 @@ Check Is Element Loaded
   ${contact_fax}=        Get From Dictionary  ${object.data.suppliers[0].contactPoint}  faxNumber
 
   ${amount}=  float_to_string_2f  ${amount}
-  Input text  name=amount0  ${amount}
+  Input text  name=amount  ${amount}
   # TODO: read curency from dict
   Select From List By Label  id=currency  грн
-  Input text  name=orgName0  ${supplier_name}
-  Input text  name=orgCode0  ${supplier_code}
+  Input text  name=orgName  ${supplier_name}
+  Input text  name=orgCode  ${supplier_code}
   Input text  name=subcInfo  ${supplier_subcInfo}
 # TODO: use qualified from dict
   Click Element              xpath=//div[@ng-if="!detailes.isLimitedReporting"]//input[1]  # Відповідність кваліфікаційним критеріям: Відповідає
@@ -1933,7 +1933,7 @@ Check Is Element Loaded
   ...  AND  Input text            xpath=//*[contains(@name,"_newCity")]  ${locality}
   Input text  xpath=//*[contains(@name,"_addressStr")]  ${streetAddress}
   Input text  xpath=//*[contains(@name,"_postIndex")]   ${postalCode}
-  Input text  name=cpName0  ${contact_name}
+  Input text  name=cpName  ${contact_name}
   Input text  id=email  ${contact_email}
   Input text  id=url  ${contact_url}
   Input text  id=phone  ${contact_phone}
